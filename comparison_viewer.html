@@ -1,0 +1,1818 @@
+<!DOCTYPE>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en" data-bs-theme="dark">
+<head>
+<meta content="charset=UTF-8"/>
+<meta charset="UTF-8"/>
+<title>Dynamic Collections</title>
+
+<script src="js/jquery-3.6.4.min.js"></script>
+<!-- Bootstrap -->
+<link href="stylesheet/bootstrap.min.css" rel="stylesheet">
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap toggle-->
+<link href="stylesheet/bootstrap4-toggle.min.css" rel="stylesheet">
+<script src="js/bootstrap4-toggle.min.js"></script>
+<!--STYLESHEET-->
+<link type="text/css" rel="stylesheet" href="stylesheet/3dhop.css"/>
+<!--COLLECTION STYLESHEET-->
+<link type="text/css" rel="stylesheet" href="stylesheet/digitalCollection.css"/>
+<!-- toastr -->
+<link href="stylesheet/toastr.min.css" rel="stylesheet"/>
+<script src="js/toastr.min.js"></script>
+<!--SPIDERGL-->
+<script type="text/javascript" src="js/spidergl.js"></script>
+<!--PRESENTER-->
+<script type="text/javascript" src="js/presenter.js"></script>
+<!--3D MODELS LOADING AND RENDERING-->
+<script type="text/javascript" src="js/nexus.js"></script>
+<script type="text/javascript" src="js/ply.js"></script>
+<!--TRACKBALLS-->
+<script type="text/javascript" src="js/trackball_turntable.js"></script>
+<script type="text/javascript" src="js/trackball_turntable_pan.js"></script>
+<script type="text/javascript" src="js/trackball_sphere.js"></script>
+<!--UTILITY-->
+<script type="text/javascript" src="js/init_multi.js"></script>
+<script type="text/javascript" src="js/helpers.js"></script>
+<!-- COLLECTION CLASS -->
+<script src="js/collection.js"></script>
+
+<!------ CONFIGURATION ------>
+<script type="text/javascript" src="js/config.js"></script>
+<!------ CONFIGURATION ------>
+
+</head>
+<body onresize="onPageResize()">
+
+<div class="h-100 container-fluid">
+<div class="h-100 row">
+
+<div class="col-sm-10 no-gutters p-0 m-0 h-100" id="viewers_left_col">
+
+<div class="h-50 row no-gutters p-0 m-0" id="viewers_row1">
+<!--############################################## VIEWER 0 ############################################-->
+<div class="col-sm-6 border no-gutters p-0" style="background-image: url(skins/backgrounds/grey_gradient.jpg); height:100%">
+<div id="3dhop0" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+
+	<!--LABEL-->
+	<div id="label_obj0" style="position:absolute; top:0px; left:50%; transform: translateX(-50%);">
+		----
+	</div>
+
+	<!--CUBE-->
+	<div style="position:absolute; top:0px; left:0px;">
+		<div class="cubeScene">
+		<div id="cube0" class="cube">
+			<div class="cube__face cube__face--front" onclick="viewFrom('front');">FRONT</div>
+			<div class="cube__face cube__face--back" onclick="viewFrom('back');">BACK</div>
+			<div class="cube__face cube__face--right" onclick="viewFrom('right');">RIGHT</div>
+			<div class="cube__face cube__face--left" onclick="viewFrom('left');">LEFT</div>
+			<div class="cube__face cube__face--top" onclick="viewFrom('top');">ABOVE</div>
+			<div class="cube__face cube__face--bottom" onclick="viewFrom('bottom');">BELOW</div>
+		</div>
+		</div>
+	</div>
+	<!--CUBE-->
+
+	<!--SYNC-->
+	<div style="position:absolute; bottom:10px; right:10px">
+		<button class="btn btn-primary" onclick="synchViewers(0);">🡆</button>
+	</div>
+	<!--SYNC-->	
+
+	<canvas id="draw-canvas0" class="tdcanvas"></canvas>
+
+</div>
+</div>
+<!--############################################## VIEWER 0 ############################################-->
+<!--############################################## VIEWER 1 ############################################-->
+<div class="col-sm-6 border no-gutters p-0" style="background-image: url(skins/backgrounds/grey_gradient.jpg); height:100%">
+<div id="3dhop1" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+
+	<!--LABEL-->
+	<div id="label_obj1" style="position:absolute; top:0px; left:50%; transform: translateX(-50%);">
+		----
+	</div>
+
+	<!--CUBE-->
+	<div style="position:absolute; top:0px; right:0px;">
+		<div class="cubeScene">
+		<div id="cube1" class="cube">
+			<div class="cube__face cube__face--front" onclick="viewFrom('front');">FRONT</div>
+			<div class="cube__face cube__face--back" onclick="viewFrom('back');">BACK</div>
+			<div class="cube__face cube__face--right" onclick="viewFrom('right');">RIGHT</div>
+			<div class="cube__face cube__face--left" onclick="viewFrom('left');">LEFT</div>
+			<div class="cube__face cube__face--top" onclick="viewFrom('top');">ABOVE</div>
+			<div class="cube__face cube__face--bottom" onclick="viewFrom('bottom');">BELOW</div>
+		</div>
+		</div>
+	</div>
+	<!--CUBE-->	
+
+	<!--SYNC-->
+	<div style="position:absolute; bottom:10px; left:10px">
+		<button class="btn btn-primary" onclick="synchViewers(1);">🡄</button>
+	</div>
+	<!--SYNC-->	
+
+	<canvas id="draw-canvas1" class="tdcanvas"></canvas>
+
+</div>
+</div>
+<!--############################################## VIEWER 1 ############################################-->
+</div>  <!-- end of viewers row 1 -->
+
+<div class="h-50 row no-gutters p-0 m-0" id="viewers_row2">
+	<!--############################################## VIEWER 2 ############################################-->
+	<div class="col-sm-6 border no-gutters p-0" style="background-image: url(skins/backgrounds/grey_gradient.jpg); height:100%">
+	<div id="3dhop2" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+	
+	<!--LABEL-->
+	<div id="label_obj2" style="position:absolute; top:0px; left:50%; transform: translateX(-50%);">
+		----
+	</div>
+
+	<!--CUBE-->
+		<div style="position:absolute; top:0px; left:0px;">
+			<div class="cubeScene">
+			<div id="cube2" class="cube">
+				<div class="cube__face cube__face--front" onclick="viewFrom('front');">FRONT</div>
+				<div class="cube__face cube__face--back" onclick="viewFrom('back');">BACK</div>
+				<div class="cube__face cube__face--right" onclick="viewFrom('right');">RIGHT</div>
+				<div class="cube__face cube__face--left" onclick="viewFrom('left');">LEFT</div>
+				<div class="cube__face cube__face--top" onclick="viewFrom('top');">ABOVE</div>
+				<div class="cube__face cube__face--bottom" onclick="viewFrom('bottom');">BELOW</div>
+			</div>
+			</div>
+		</div>
+		<!--CUBE-->
+	
+		<!--SYNC-->
+		<div style="position:absolute; top:10px; right:10px">
+			<button class="btn btn-primary" onclick="synchViewers(2);">🡆</button>
+		</div>
+		<!--SYNC-->	
+	
+		<canvas id="draw-canvas2" class="tdcanvas"></canvas>
+	
+	</div>
+	</div>
+	<!--############################################## VIEWER 2 ############################################-->
+	<!--############################################## VIEWER 3 ############################################-->
+	<div class="col-sm-6 border no-gutters p-0" style="background-image: url(skins/backgrounds/grey_gradient.jpg); height:100%">
+	<div id="3dhop3" class="tdhop" onmousedown="if (event.preventDefault) event.preventDefault()">
+	
+	<!--LABEL-->
+	<div id="label_obj3" style="position:absolute; top:0px; left:50%; transform: translateX(-50%);">
+		----
+	</div>
+
+	<!--CUBE-->
+		<div style="position:absolute; top:0px; right:0px;">
+			<div class="cubeScene">
+			<div id="cube3" class="cube">
+				<div class="cube__face cube__face--front" onclick="viewFrom('front');">FRONT</div>
+				<div class="cube__face cube__face--back" onclick="viewFrom('back');">BACK</div>
+				<div class="cube__face cube__face--right" onclick="viewFrom('right');">RIGHT</div>
+				<div class="cube__face cube__face--left" onclick="viewFrom('left');">LEFT</div>
+				<div class="cube__face cube__face--top" onclick="viewFrom('top');">ABOVE</div>
+				<div class="cube__face cube__face--bottom" onclick="viewFrom('bottom');">BELOW</div>
+			</div>
+			</div>
+		</div>
+		<!--CUBE-->	
+	
+		<!--SYNC-->
+		<div style="position:absolute; top:10px; left:10px">
+			<button class="btn btn-primary" onclick="synchViewers(3);">🡄</button>
+		</div>
+		<!--SYNC-->	
+	
+		<canvas id="draw-canvas3" class="tdcanvas"></canvas>
+	
+	</div>
+	</div>
+	<!--############################################## VIEWER 3 ############################################-->
+	</div>  <!-- end of viewers row 2 -->
+
+
+</div> <!-- end of viewers column -->
+
+<!--##############################################RIGHT#############################################-->
+<div id="right_column" class="col-sm-2 justify-content-center overflow-hidden interfaceCol">
+
+<!-- name & help -->
+<div id="rr1" class="row justify-content-center">
+<div class="col-sm-10 p-2" style="text-align:left">
+	<span id="sp_objDetails"></span>
+</div>
+<div class="col-sm-2 px-0" style="text-align:center">
+	<button class="btn btn-primary px-1 py-1 my-2" onclick="showHelp();"><img title="Help" src="skins/minimal_light/help.png" style="width:min(2.5vw,25px);"/></button>
+</div>
+</div>
+<!-- name & help -->
+
+<!-- home, zoom, canonical views -->
+<div id="rr2" class="row my-0 border interfacePanel">
+<div class="col-sm-3 p-0" style="text-align:center;">
+<button class="btn btn-secondary px-1 py-1 my-2" onclick="home();"><img title="Home" src="skins/minimal_light/home.png" style="width:min(3vw,33px);"/></button>
+</br></br>
+<input id="i_orthoCamera" type="checkbox" style="width:20px; height:20px; cursor:hand;" onclick="updateOrtho(this.checked);"></input></br>
+<h6 style='font-size:min(1.1vw, 1.1rem);'>ORTHO</h6>
+</div>
+<div class="col-sm-9 p-1"  style="text-align:center;">
+<center>
+<table>
+<tr><td></td><td><button class="btn btn-secondary side_bt" onclick="viewFrom('top');">TOP</button></td><td></td><td></td></tr>
+<tr><td><button class="btn btn-secondary side_bt" onclick="viewFrom('left');">LEFT</button></td><td><button class="btn btn-secondary side_bt" onclick="viewFrom('front');">FRONT</button></td><td><button class="btn btn-secondary side_bt" onclick="viewFrom('right');">RIGHT</button></td><td><button class="btn btn-secondary side_bt" onclick="viewFrom('back');">BACK</button></td></tr>
+<tr><td></td><td><button class="btn btn-secondary side_bt" onclick="viewFrom('bottom');">BOTTOM</button></td><td></td><td></td></tr> 
+</table>
+</center>
+</div>
+</div>
+<!-- home, zoom, canonical views -->
+
+<!-- light & rendermodes -->
+<div id="rr3" class="row my-0 border myCollapse interfacePanel" style="position:relative;">
+<div class="col-1 p-1">
+	<img src="./media/restore.png" width="30px" height="30px" data-toggle="tooltip" data-placement="top" title="" onclick="resetViewState()" data-original-title="Reset Rendering">
+</div>
+<div class="col-5 p-1 d-flex align-items-center justify-content-center">
+  <canvas id="lightcontroller_canvas"/>
+</div>
+<div class="col-6 p-1" style="text-align:center">
+ <input class="resp_font" id="i_solidColor" type="checkbox" data-toggle="toggle" data-height="min(50px,20%)" data-width="min(130px,100%)" data-onstyle="secondary" data-offstyle="secondary" data-on="Plain Color" data-off="Texture" onchange="updateViewState('solid',this.checked);"/></br>
+ <input class="resp_font" id="i_transparency" type="checkbox" data-toggle="toggle" data-height="min(50px,20%)" data-width="min(130px,100%)" data-onstyle="secondary" data-offstyle="secondary" data-on="Transparent" data-off="Solid" onchange="updateViewState('transparency',this.checked);"/></br>
+ <input class="resp_font" id="i_useLighting" checked type="checkbox" data-toggle="toggle" data-height="min(50px,20%)" data-width="min(130px,100%)" data-onstyle="secondary" data-offstyle="secondary" data-on="Lighting" data-off="Unshaded" onchange="updateViewState('lighting',this.checked);"/></br>
+ <input class="resp_font" id="i_useSpecular" type="checkbox" data-toggle="toggle" data-height="min(50px,20%)" data-width="min(130px,100%)" data-onstyle="secondary" data-offstyle="secondary" data-on="Specular" data-off="Diffuse" onchange="updateViewState('specular',this.checked);"/></br>
+</div>
+<hr class="w-100 m-0 p-0"/>
+<div class="col-sm-12 p-1 d-flex align-items-center justify-content-center resp_font">
+	Grid:
+	<select id="i_grid" name="grid" class="px-1 mx-2" onchange="changeGrid();">
+		<option value="off">Off</option>
+		<option selected=true value="flat">Base</option>
+		<option value="box">Box</option>
+		<option value="box">Fixed</option>
+	</select>
+	&nbsp;&nbsp;&nbsp;
+	<input id="i_axes" type="checkbox" style="cursor:hand;" onclick="if(this.checked) {for(pi in presenters)addAxes(pi);} else {for(pi in presenters)removeAxes(pi);}"> XYZ axes</input>
+</div>
+</div>
+<!-- light & rendermodes -->
+
+<!-- Other controls -->
+<div id="rr5" class="row my-0 border interfacePanel">
+<div class="col-sm-12 p-1 d-flex align-items-center justify-content-around">
+<button class="btn btn-secondary p-1 resp_font" onclick="for(pi in presenters)presenters[pi].saveScreenshot();"><img src="skins/minimal_light/screenshot.png" style="width:min(3vw,33px);"/></br>Screenshot</button>
+<div class="border p-1 resp_font justify-content-around" style="display:none">
+	<label>Annotations:</label></br>
+	<button id="bt_saveAnn" class="btn btn-warning btn-small py-0 px-1 resp_font" onclick="saveAnnotations();">Export</button>
+	<button id="bt_loadAnn" class="btn btn-warning btn-small py-0 px-1 resp_font"onclick="loadAnnotations();">Load</button>
+</div>
+	<input type="file" id="i_JSON" accept=".json,.JSON,.Json" style="display:none" onchange="getJSON(this.files);"/>
+</div>
+</div>
+<!-- Other controls -->
+
+<!-- data -->
+<div id="rr6" class="row my-0 border interfacePanel" style="overflow-y:auto">
+<button class="btn btn-warning btn-small p-0 m-1" onclick="collapseControls()" style="width:20px; height:20px; z-index:10; position:absolute; right:20px;"><h6>&#11021;</h6></button>
+<div class="col-sm-12 p-1">
+	<ul class="nav nav-tabs resp_font" id="myTab" role="tablist">
+	  <li class="nav-item">
+		<button class="nav-link active px-1" id="info-tab" data-bs-toggle="tab" data-bs-target="#panel_info" type="button" role="tab">Objects</button>		
+	  </li>
+	  <li class="nav-item" id="scene-tab-li" style="display:none;">
+		<button class="nav-link px-1" id="scene-tab" data-bs-toggle="tab" data-bs-target="#panel_scene" type="button" role="tab">Scene</button>
+	  </li>		  
+	  <li class="nav-item">
+		<button class="nav-link px-1" id="notes-tab" data-bs-toggle="tab" data-bs-target="#panel_notes" type="button" role="tab">Notes</button>
+	  </li>  
+	  <li class="nav-item">
+		<button class="nav-link px-1" id="views-tab" data-bs-toggle="tab" data-bs-target="#panel_views" type="button" role="tab">Views</button>		
+	  </li>
+	  <li class="nav-item" style="display:none;">
+		<button class="nav-link px-1" id="spots-tab" data-bs-toggle="tab" data-bs-target="#panel_spots" type="button" role="tab">Spots</button>		
+	  </li>
+	</ul>
+	<div class="tab-content" id="myTabContent">
+	  <div class="tab-pane fade show active" id="panel_info" role="tabpanel">meta para data</div>
+	  <div class="tab-pane fade" id="panel_notes" role="tabpanel"><h2>notes<h2></div>
+	  <div class="tab-pane fade" id="panel_scene" role="tabpanel"><h2>elements<h2></div>
+	  <div class="tab-pane fade" id="panel_views" role="tabpanel"><h2>views</h2></div>
+	  <div class="tab-pane fade" id="panel_spots" role="tabpanel"><h2>spots</h2></div>
+	</div>
+</div>
+</div>
+<!-- data -->
+
+</div>
+<!--##############################################RIGHT#############################################-->
+
+<!--########################MODAL HELP PANEL########################-->
+<div class="modal fade" id="helpPanel" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header" id="md1_head">
+        <h5 class="modal-title" id="myLabel">Dynamic Collections Help</h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<table class="table" style="width:100%">
+		<tbody>
+		<tr><td colspan="2" align="center"><h4>Controls</h4></td></tr>
+
+		<tr><td>Left Mouse Button + Move</td><td>Rotate 3D Model</td></tr>
+		<tr><td>CTRL + Left Mouse Button + Move</td><td>Pan 3D Model</td></tr>	   
+		<tr><td>Middle Mouse Button + Move</td><td>Pan 3D Model</td></tr>	   	   
+		<tr><td>Mouse Wheel</td><td>Zoom In/Out</td></tr>
+		<tr><td>Double Click</td><td>Centers ont he clicked point and zoom</td></tr>
+		
+		<tr><td colspan="3" align="center"><h4>Toolbar</h4></td></tr>
+		<tr><td align="center"><img src="skins/dark/measure.png" width="30px;"/></td><td>Measurement mode: measure point-to-point distance on the 3D model by clicking on two points.</td></tr>
+		<tr><td align="center"><img src="skins/dark/pick.png" width="30px;"/></td><td>Point-Picking mode: click on the model to know the XYZ coordinates of that point.</td></tr>
+		<tr><td align="center"><img src="skins/dark/sections.png" width="30px;"/></td><td>Cut-through Sections: open the section interface to interactively cut the model along the XYZ axes.</td></tr>	
+
+		</tbody>	 
+		</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--########################MODAL HELP PANEL########################-->
+
+
+
+</div>
+</div>
+
+</body>
+
+
+
+<script type="text/javascript">
+//----------------------------------------------
+var COMPCODE = null;
+var OBJCODES = [];
+var SESSION_ID = null;
+var ARCHIVE = new Archive();
+var COLLECTION = null;
+var COMPARISON_ANNOTATIONS = {
+	"version" : "1.5",
+	"notes" : "",
+	"views" : {},
+	"newIndex" : 100,
+};
+var VIEW_STATE = {
+	"solid" : false,
+	"transparency" : false,
+	"lighting" : true,
+	"specular" : false,
+	"lightDir" : [-0.17,-0.17],
+};
+var MESSAGECHANNEL = null;
+var IS_EDITING = false;
+//----------------------------------------------
+//angle measurement
+var angleStage = 0;
+var anglePoints = [[0.0,0.0,0.0],[0.0,0.0,0.0],[0.0,0.0,0.0]];
+//----------------------------------------------
+
+//viewer state
+var VIEWERSTATE = {};
+//----------------------------------------------
+var presenters = [];
+//----------------------------------------------
+
+function setup3dhop(viewerIndex) { 
+	
+	var myScene = {
+		meshes: {
+			"sphere" : { url: "./models/sphere.ply" },
+			"cube"   : { url: "./models/cube.ply" },
+		},
+		modelInstances: {
+		},
+		spots: {
+		},
+		trackball: { 
+			type: TurntablePanTrackball,
+			trackOptions: {
+				startPhi: 15.0,
+				startTheta: 15.0,
+				startDistance: 2.0,
+				minMaxPhi: [-180, 180],
+				minMaxTheta: [-90.0, 90.0],
+				minMaxDist: [0.1, 3.0]
+			}
+		},
+		space: {
+			centerMode: "scene",
+			radiusMode: "scene",
+			cameraNearFar: [0.01, 5.0],
+		},
+		config: {
+			pickedpointColor    : [1.0, 0.0, 1.0],
+			measurementColor    : [0.5, 1.0, 0.5],
+			showClippingPlanes  : true,
+			showClippingBorder  : true,
+			clippingBorderSize  : 0.5,
+			clippingBorderColor : [0.0, 1.0, 1.0]
+		}
+	};
+
+	if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "m")
+		myScene.config.clippingBorderSize = 0.001;
+		
+	var modelFiles = getModelFile(OBJCODES[viewerIndex]);
+	
+	modelFiles.forEach((item, ii) => {
+		myScene.meshes["mesh_" + ii] = {};
+		myScene.meshes["mesh_" + ii].url = modelFiles[ii];
+		
+		myScene.modelInstances["model_specimen_" +ii] = {};
+		myScene.modelInstances["model_specimen_" +ii].mesh = "mesh_" + ii;
+		myScene.modelInstances["model_specimen_" +ii].color = [0.5, 0.5, 0.5];
+		myScene.modelInstances["model_specimen_" +ii].backfaceColor = [0.5, 0.5, 0.5, 3.0];
+		myScene.modelInstances["model_specimen_" +ii].specularColor = [0.0, 0.0, 0.0, 256.0];
+		myScene.modelInstances["model_specimen_" +ii].tags = ["SPECIMEN"];
+		
+		let transf = ARCHIVE.data(OBJCODES[viewerIndex],"TRANSFORM");
+		if(transf){
+			myScene.modelInstances["model_specimen_" +ii].transform = JSON.parse(transf);
+		}
+	});
+	
+//DEBUG DEBUG
+//	myScene.config.screenshotBaseName = ARCHIVE.data(OBJCODE,"THUMBNAIL_ID");
+	
+	presenters[viewerIndex].setScene(myScene);
+	
+//--MEASURE--
+//	presenters[viewerIndex]._onEndMeasurement = onEndMeasure;
+//--MEASURE--
+
+//--POINT PICKING--
+//	presenters[viewerIndex]._onEndPickingPoint = onEndPick;
+//--POINT PICKING--
+
+//--SECTIONS--
+	//sectiontoolInit();
+//--SECTIONS--
+}
+
+function actionsToolbar(action) {
+	if(action=='measure') {
+		presenters[0].enablePickpointMode(false);
+		pickpointSwitch(false);
+		enableAngleMeasurement(false);
+		presenters[0].enableMeasurementTool(true);
+		measureSwitch(true);
+		setInstructions("pick two points A-B on the object to measure their distance");
+	}
+	if(action=='measure_on') {
+		presenters[0].enableMeasurementTool(false);
+		measureSwitch(false);
+		clearInstructions();
+	}
+	else if(action=='pick') {
+		presenters[0].enableMeasurementTool(false);
+		measureSwitch(false);
+		enableAngleMeasurement(false);
+		presenters[0].enablePickpointMode(true);
+		pickpointSwitch(true);
+		setInstructions("pick a point A on the object to read its coordinates");
+	}
+	else if(action=='pick_on') {
+		presenters[0]._onEndPickingPoint = onEndPick;
+		presenters[0].enablePickpointMode(false);
+		pickpointSwitch(false);
+		clearInstructions();
+	}
+	else if(action=='angle') {
+		presenters[0].enableMeasurementTool(false);
+		measureSwitch(false);
+		presenters[0].enablePickpointMode(false);
+		pickpointSwitch(false);
+		enableAngleMeasurement(true);
+		setInstructions("pick three points A-O-B on the object to calculate the angle A&Ocirc;B");
+	}
+	else if(action=='angle_on') {
+		enableAngleMeasurement(false);
+		clearInstructions();
+	}
+	else if(action=='sections') {
+		sectiontoolReset();
+		sectiontoolSwitch(true);
+	}
+	else if(action=='sections_on') {
+		sectiontoolReset();
+		sectiontoolSwitch(false);
+	}	
+}
+
+//--------------------------------------------------------------------------------------------
+function enableAngleMeasurement(state){
+	if(state){
+		jQuery('#angle').css("visibility", "hidden");
+		jQuery('#angle_on').css("visibility", "visible");
+		jQuery('#angle-box').fadeIn().css("display","table");
+		anchorAnglePanel();
+		resetAngle();
+		presenters[0]._onEndPickingPoint = onAnglePick;
+		presenters[0].enablePickpointMode(true);	
+	}
+	else{
+		jQuery('#angle').css("visibility", "visible");
+		jQuery('#angle_on').css("visibility", "hidden");
+		jQuery('#angle-box').css("display","none");
+		jQuery('#angle-output').html("0.0&deg;");
+		presenters[0].deleteEntity("angleP");
+		presenters[0].deleteEntity("angleL");
+		presenters[0].deleteEntity("angleV");
+		presenters[0].enablePickpointMode(false);
+		presenters[0]._onEndPickingPoint = onEndPick;
+		resetAngle();		
+	}
+}
+function anchorAnglePanel(){
+	if (jQuery('#angle-box')[0] && jQuery('#angle')[0])
+	{
+		jQuery('#angle-box').css('left', (jQuery('#angle').position().left + jQuery('#angle').width() + jQuery('#toolbar').position().left + 5));
+		jQuery('#angle-box').css('top', (jQuery('#angle').position().top + jQuery('#toolbar').position().top));
+	}
+}
+
+
+//----- GRIDS + encumbrance ---------------------------------------------------------------------------------------
+var addGrid = addBaseGrid;	//starting default
+	
+function changeGrid() {
+	for(pi in presenters) removeGrid(pi);
+
+	var GG = document.getElementById('i_grid').selectedIndex;
+	if (GG===0)
+		return;	//no grid, and I already removed it
+	if (GG===1)
+		addGrid = addBaseGrid;
+	if (GG===2)
+		addGrid = addBoxGrid;
+	if (GG===3)
+		addGrid = addBBGrid;
+
+	for(pi in presenters) addGrid(pi);
+}
+
+function computeSceneBB(viewerIndex) {
+	var sceneBB = [-Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];	
+	for(inst in presenters[viewerIndex]._scene.modelInstances){
+		let bb = getBBox(viewerIndex,inst);
+		if(bb[0] > sceneBB[0]) sceneBB[0] = bb[0];
+		if(bb[1] > sceneBB[1]) sceneBB[1] = bb[1];
+		if(bb[2] > sceneBB[2]) sceneBB[2] = bb[2];
+		if(bb[3] < sceneBB[3]) sceneBB[3] = bb[3];
+		if(bb[4] < sceneBB[4]) sceneBB[4] = bb[4];
+		if(bb[5] < sceneBB[5]) sceneBB[5] = bb[5];		
+	}
+	return sceneBB;
+}
+function getBBox(viewerIndex,instance) {
+	var mname = presenters[viewerIndex]._scene.modelInstances[instance].mesh;
+	var vv = presenters[viewerIndex]._scene.meshes[mname].renderable.mesh.basev;	
+	var bbox = [-Number.MAX_VALUE, -Number.MAX_VALUE, -Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE, Number.MAX_VALUE];	
+	var point,tpoint;
+	
+	for(var vi=1; vi<(vv.length / 3); vi++){
+		point = [vv[(vi*3)+0], vv[(vi*3)+1], vv[(vi*3)+2], 1.0]
+		tpoint = SglMat4.mul4(presenters[viewerIndex]._scene.modelInstances[instance].transform.matrix, point);
+		if(tpoint[0] > bbox[0]) bbox[0] = tpoint[0];
+		if(tpoint[1] > bbox[1]) bbox[1] = tpoint[1];
+		if(tpoint[2] > bbox[2]) bbox[2] = tpoint[2];
+		if(tpoint[0] < bbox[3]) bbox[3] = tpoint[0];
+		if(tpoint[1] < bbox[4]) bbox[4] = tpoint[1];
+		if(tpoint[2] < bbox[5]) bbox[5] = tpoint[2];	
+	}		
+	return bbox;
+}
+
+function computeEncumbrance(viewerIndex) {
+	var sceneBB = computeSceneBB(viewerIndex);
+	var gStep = 1.0;
+	if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "mm")
+		gStep = 10.0;
+	else if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "m")
+		gStep = 0.01;	
+	
+	var encumbrance = [0.0, 0.0, 0.0];
+	encumbrance[0] = Math.trunc(Math.ceil((sceneBB[0]-sceneBB[3])/gStep)+1);
+	encumbrance[1] = Math.trunc(Math.ceil((sceneBB[1]-sceneBB[4])/gStep)+1);
+	encumbrance[2] = Math.trunc(Math.ceil((sceneBB[2]-sceneBB[5])/gStep)+1);
+
+	ARCHIVE.objects[OBJCODES[viewerIndex]].ENCUMBRANCE = encumbrance[0] + " x " + encumbrance[1]  + " x " + encumbrance[2] + " cm";
+}
+
+function removeGrid(viewerIndex) {
+	// base grid
+	presenters[viewerIndex].deleteEntity("gridBase");
+	// box grid
+	presenters[viewerIndex].deleteEntity("gridBox");
+	// bb grid
+	presenters[viewerIndex].deleteEntity("gridBB");
+}
+
+function addBaseGrid(viewerIndex) {
+	var sceneBB = computeSceneBB(viewerIndex);
+	var rad = 1.0 / presenters[viewerIndex].sceneRadiusInv;
+	var XC = (sceneBB[0] + sceneBB[3]) / 2.0;
+	var YC = sceneBB[4];
+	var ZC = (sceneBB[2] + sceneBB[5]) / 2.0;
+	
+	var gStep = 1.0;
+	if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "mm")
+		gStep = 10.0;
+	else if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "m")
+		gStep = 0.01;
+	var numDivMaj = Math.floor(rad/gStep);
+	
+	var linesBuffer;
+	
+	// major
+	var gridBase;
+	linesBuffer = [];
+	for (gg = -numDivMaj; gg <= numDivMaj; gg+=1)
+	{
+			linesBuffer.push([XC + (gg*gStep), YC, ZC + (-gStep*numDivMaj)]);
+			linesBuffer.push([XC + (gg*gStep), YC, ZC + ( gStep*numDivMaj)]);
+			linesBuffer.push([XC + (-gStep*numDivMaj), YC, ZC + (gg*gStep)]);
+			linesBuffer.push([XC + ( gStep*numDivMaj), YC, ZC + (gg*gStep)]);		
+	}
+	gridBase = presenters[viewerIndex].createEntity("gridBase", "lines", linesBuffer);
+	gridBase.color = [0.9, 0.9, 0.9, 1.0];
+	gridBase.zOff = 0.0;
+	presenters[viewerIndex].repaint();
+}
+
+function addBoxGrid(viewerIndex) {
+	var sceneBB = computeSceneBB(viewerIndex);
+	var Xsteps,Ysteps,Zsteps,ii;
+	var XC = (sceneBB[0] + sceneBB[3]) / 2.0;
+	var YC = (sceneBB[1] + sceneBB[4]) / 2.0;
+	var ZC = (sceneBB[2] + sceneBB[5]) / 2.0;
+	
+	var gStep = 1.0;
+	if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "mm")
+		gStep = 10.0;
+	else if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "m")
+		gStep = 0.01;	
+	
+	Xsteps = Math.trunc(Math.ceil((sceneBB[0]-sceneBB[3])/gStep)+1);
+	Ysteps = Math.trunc(Math.ceil((sceneBB[1]-sceneBB[4])/gStep)+1);
+	Zsteps = Math.trunc(Math.ceil((sceneBB[2]-sceneBB[5])/gStep)+1);	
+	
+	var boxG = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+	boxG[0] = XC + ((Xsteps/2.0) * gStep);
+	boxG[1] = YC + ((Ysteps/2.0) * gStep);
+	boxG[2] = ZC + ((Zsteps/2.0) * gStep);
+	boxG[3] = XC - ((Xsteps/2.0) * gStep);
+	boxG[4] = YC - ((Ysteps/2.0) * gStep);
+	boxG[5] = ZC - ((Zsteps/2.0) * gStep);
+
+	var gridBox;
+	var linesBuffer = [];	
+	//--------------------X
+	for (ii=0; ii<=Ysteps; ii+=1)
+	{
+			linesBuffer.push([boxG[3], boxG[4]+(gStep*ii), boxG[2]]);
+			linesBuffer.push([boxG[3], boxG[4]+(gStep*ii), boxG[5]]);
+			linesBuffer.push([boxG[0], boxG[4]+(gStep*ii), boxG[2]]);
+			linesBuffer.push([boxG[0], boxG[4]+(gStep*ii), boxG[5]]);
+	}
+	for (ii=0; ii<=Zsteps; ii+=1)
+	{
+			linesBuffer.push([boxG[3], boxG[1], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[3], boxG[4], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[0], boxG[1], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[0], boxG[4], boxG[5]+(gStep*ii)]);
+	}
+	//--------------------Y
+	for (ii =0; ii <= Xsteps; ii+=1)
+	{
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[4], boxG[2]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[4], boxG[5]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[1], boxG[2]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[1], boxG[5]]);
+	}
+	for (ii = 0; ii <= Zsteps; ii+=1)
+	{
+			linesBuffer.push([boxG[0], boxG[4], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[3], boxG[4], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[0], boxG[1], boxG[5]+(gStep*ii)]);
+			linesBuffer.push([boxG[3], boxG[1], boxG[5]+(gStep*ii)]);
+	}
+	//--------------------Z
+	for (ii =0; ii <= Xsteps; ii+=1)
+	{
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[1], boxG[5]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[4], boxG[5]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[1], boxG[2]]);
+			linesBuffer.push([boxG[3]+(gStep*ii), boxG[4], boxG[2]]);
+	}
+	for (ii = 0; ii <= Ysteps; ii+=1)
+	{
+			linesBuffer.push([boxG[0], boxG[4]+(gStep*ii), boxG[5]]);
+			linesBuffer.push([boxG[3], boxG[4]+(gStep*ii), boxG[5]]);
+			linesBuffer.push([boxG[0], boxG[4]+(gStep*ii), boxG[2]]);
+			linesBuffer.push([boxG[3], boxG[4]+(gStep*ii), boxG[2]]);
+	}
+
+	gridBox = presenters[viewerIndex].createEntity("gridBox", "lines", linesBuffer);
+	gridBox.color = [0.8, 0.8, 0.8, 0.5];
+	gridBox.zOff = 0.0;
+	gridBox.useTransparency = true;		
+	presenters[viewerIndex].repaint();
+}
+
+function addBBGrid(viewerIndex) {
+	var rad = (1.0 / presenters[viewerIndex].sceneRadiusInv) * 1.0;
+	var XC = 0.0;
+	var YC = 0.0;
+	var ZC = 0.0;
+
+	var gStep = 1.0;
+	if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "mm")
+		gStep = 10.0;
+	else if(ARCHIVE.data(OBJCODES[viewerIndex],"MEASURE_UNIT") === "m")
+		gStep = 0.01;
+	var numDiv = Math.floor(rad / gStep);
+	var linesBuffer = [];
+	var gridBB;
+	
+	for (gg = -numDiv; gg <= numDiv; gg+=1)
+	{
+			linesBuffer.push([XC + (gg*gStep), YC + (-gStep*numDiv), ZC]);
+			linesBuffer.push([XC + (gg*gStep), YC + ( gStep*numDiv), ZC]);
+			linesBuffer.push([XC + (-gStep*numDiv), YC + (gg*gStep), ZC]);
+			linesBuffer.push([XC + ( gStep*numDiv), YC + (gg*gStep), ZC]);
+	}
+	gridBB = presenters[viewerIndex].createEntity("gridBB", "lines", linesBuffer);
+	gridBB.color = [0.7, 0.7, 0.7, 0.5];
+	gridBB.zOff = 0.5;
+	gridBB.useTransparency = true;		
+	presenters[viewerIndex].repaint();
+}
+
+
+function removeAxes(viewerIndex){
+	presenters[viewerIndex].deleteEntity("XXaxis");
+	presenters[viewerIndex].deleteEntity("YYaxis");
+	presenters[viewerIndex].deleteEntity("ZZaxis");
+}
+function addAxes(viewerIndex){
+	var rad = (1.0 / presenters[viewerIndex].sceneRadiusInv)/2.0;
+	var linesBuffer;
+	var point, tpoint;
+	
+	point = [rad, 0.0, 0.0, 1.0]
+	tpoint = SglMat4.mul4(presenters[viewerIndex]._scene.modelInstances["model_specimen_0"].transform.matrix, point);
+	linesBuffer = [];
+	linesBuffer.push([0, 0, 0]);
+	linesBuffer.push([tpoint[0], tpoint[1], tpoint[2]]);	
+	var axisX = presenters[viewerIndex].createEntity("XXaxis", "lines", linesBuffer);
+	axisX.color = [1.0, 0.2, 0.2, 1.0];
+	axisX.zOff = 0.0;
+	
+	point = [0.0, rad, 0.0, 1.0]
+	tpoint = SglMat4.mul4(presenters[viewerIndex]._scene.modelInstances["model_specimen_0"].transform.matrix, point);
+	linesBuffer = [];
+	linesBuffer.push([0, 0, 0]);
+	linesBuffer.push([tpoint[0], tpoint[1], tpoint[2]]);	
+	var axisY = presenters[viewerIndex].createEntity("YYaxis", "lines", linesBuffer);
+	axisY.color = [0.2, 1.0, 0.2, 1.0];
+	axisY.zOff = 0.0;
+
+	point = [0.0, 0.0, rad, 1.0]
+	tpoint = SglMat4.mul4(presenters[viewerIndex]._scene.modelInstances["model_specimen_0"].transform.matrix, point);	
+	linesBuffer = [];
+	linesBuffer.push([0, 0, 0]);
+	linesBuffer.push([tpoint[0], tpoint[1], tpoint[2]]);	
+	var axisZ = presenters[viewerIndex].createEntity("ZZaxis", "lines", linesBuffer);
+	axisZ.color = [0.2, 0.2, 1.0, 1.0];
+	axisZ.zOff = 0.0;	
+	
+	presenters[viewerIndex].repaint();
+}
+
+
+
+
+//---------------------------------------------------------------------------------------
+function resizeLightController(){
+	var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
+	var dim = Math.min(150, Math.min(lightControllerCanvas.parentElement.clientWidth,lightControllerCanvas.parentElement.clientHeight));
+	lightControllerCanvas.width = dim;
+	lightControllerCanvas.height = dim;	
+}
+function clickLightController(event) {
+	var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
+	var cwidth = lightControllerCanvas.width;
+	var cheight = lightControllerCanvas.height;
+	var midpoint = [Math.floor(cwidth/2.0),Math.floor(cheight/2.0)];
+	var radius = Math.min(midpoint[0],midpoint[1]);
+
+	var XX = event.offsetX - midpoint[0];
+	var YY = event.offsetY - midpoint[1];
+
+	// check inside circle
+	if((XX*XX + YY*YY) < ((radius)*(radius))) {
+		var lx = (XX / radius)/2.0;
+		var ly = (YY / radius)/2.0;
+
+		VIEW_STATE.lightDir = [lx,ly];
+		for(pi in presenters){
+			presenters[pi].rotateLight(VIEW_STATE.lightDir[0],-VIEW_STATE.lightDir[1]); // inverted y
+		}
+		updateLightController(VIEW_STATE.lightDir[0],VIEW_STATE.lightDir[1]);
+
+		(event.touches) ? lightControllerCanvas.addEventListener("touchmove", clickLightController, false) : lightControllerCanvas.addEventListener("mousemove", clickLightController, false);
+	}
+}
+function updateLightController(xx,yy) {
+	var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
+	var cwidth = lightControllerCanvas.width;
+	var cheight = lightControllerCanvas.height;
+	var midpoint = [Math.floor(cwidth/2.0),Math.floor(cheight/2.0)];
+	var radius = Math.min(midpoint[0],midpoint[1]);
+
+	var context = lightControllerCanvas.getContext("2d");
+	context.clearRect(0, 0, cwidth, cheight);
+
+	context.beginPath();
+	context.arc(midpoint[0], midpoint[1], radius, 0, 2 * Math.PI, false);
+	var grd=context.createRadialGradient(midpoint[0]+(xx*(radius-3)*2),midpoint[1]+(yy*(radius-3)*2),3,midpoint[0], midpoint[1],radius);
+	grd.addColorStop(0,"yellow");	
+	grd.addColorStop(1,"black");
+	context.fillStyle = grd;
+	context.fill();
+	context.lineWidth = 1;
+	context.strokeStyle = 'black';
+	context.stroke();
+
+	for(pi in presenters){	
+		presenters[pi].repaint();
+	}
+}
+function setupLightController() {
+		// touch and click management
+		var lightControllerCanvas = document.getElementById("lightcontroller_canvas");
+		lightControllerCanvas.addEventListener("touchstart", clickLightController, false);
+		lightControllerCanvas.addEventListener("mousedown", clickLightController, false);
+		var canvas0 = document.getElementById("draw-canvas0");
+		canvas0.addEventListener("mouseup", function () { 
+			lightControllerCanvas.removeEventListener("mousemove", clickLightController, false); 
+			lightControllerCanvas.removeEventListener("touchmove", clickLightController, false);
+		}, false);
+		var canvas1 = document.getElementById("draw-canvas1");		
+		canvas1.addEventListener("mouseup", function () { 
+			lightControllerCanvas.removeEventListener("mousemove", clickLightController, false); 
+			lightControllerCanvas.removeEventListener("touchmove", clickLightController, false);
+		}, false);
+		document.addEventListener("mouseup", function () { 
+			lightControllerCanvas.removeEventListener("mousemove", clickLightController, false);
+			lightControllerCanvas.removeEventListener("touchmove", clickLightController, false);
+		}, false);
+}
+
+//---------------------------------------------------------------------------------------
+function setInstructions(text){
+	$('#panel_instructions').html(text);
+}
+function clearInstructions(){
+	$('#panel_instructions').html("");
+}
+//---------------------------------------------------------------------------------------
+function onEndMeasure(measure) {
+	var clampTo = (ARCHIVE.data(OBJCODE,"MEASURE_UNIT") == "m")? 3 : 2;
+	$('#measure-output').html(measure.toFixed(clampTo) + ARCHIVE.data(OBJCODE,"MEASURE_UNIT")); 
+}
+//---------------------------------------------------------------------------------------
+function onEndPick(point) {
+	var clampTo = (ARCHIVE.data(OBJCODE,"MEASURE_UNIT") == "m")? 3 : 2;
+	//undo object transform
+	var opoint = [point[0], point[1], point[2], 1.0];	
+	var tpoint = SglMat4.mul4(SglMat4.inverse(presenters[0]._scene.modelInstances["model_specimen_0"].transform.matrix), opoint);
+	var x = tpoint[0].toFixed(clampTo);
+	var y = tpoint[1].toFixed(clampTo);
+	var z = tpoint[2].toFixed(clampTo);
+    $('#pickpoint-output').html("[ "+x+" , "+y+" , "+z+" ]");
+}
+//---------------------------------------------------------------------------------------
+function onAnglePick(point) {
+	if(angleStage == 3)	angleStage = 0; //reset for new measure
+
+	anglePoints[angleStage] = [point[0],point[1],point[2]];
+	angleStage++;
+
+	displayAngle();
+	if(angleStage == 3) displayAngleEnd();
+}
+
+function displayAngle(){
+	var pointsBuffer = [];
+	var linesBuffer = [];
+	var ii = 0;
+
+	for(ii=0; ii<angleStage; ii++){
+		pointsBuffer.push(anglePoints[ii]);
+	}
+	for(ii=0; ii<angleStage-1; ii++){
+		linesBuffer.push(anglePoints[ii]);
+		linesBuffer.push(anglePoints[ii+1]);
+	}
+
+	var angleP = presenters[0].createEntity("angleP", "points", pointsBuffer);
+	angleP.color = [0.2, 0.3, 0.9, 1.0];
+	angleP.zOff = 0.001;
+
+	var angleL = presenters[0].createEntity("angleL", "lines", linesBuffer);
+	angleL.color = [0.2, 0.3, 0.9, 1.0];
+	angleL.zOff = 0.001;
+
+	presenters[0].deleteEntity("angleV");
+	presenters[0].repaint();
+}
+function displayAngleEnd(){
+	var v1 = SglVec3.normalize(SglVec3.sub(anglePoints[0], anglePoints[1]));
+	var v2 = SglVec3.normalize(SglVec3.sub(anglePoints[2], anglePoints[1]));
+	var angle = sglRadToDeg(Math.acos(SglVec3.dot(v1,v2)));
+	$('#angle-output').html(angle.toFixed(2) + "&deg;");
+
+	var len = 0.75 * Math.min(SglVec3.length(SglVec3.sub(anglePoints[0], anglePoints[1])), SglVec3.length(SglVec3.sub(anglePoints[2], anglePoints[1])));
+
+	var triBuffer = [];
+	triBuffer.push(anglePoints[1]);
+	triBuffer.push(SglVec3.add(SglVec3.muls(v1,len),anglePoints[1]));
+	triBuffer.push(SglVec3.add(SglVec3.muls(v2,len),anglePoints[1]));
+	var angleV = presenters[0].createEntity("angleV", "triangles", triBuffer);
+	angleV.color = [0.2, 0.5, 0.7, 0.3];
+	angleV.zOff = 0.01;
+	angleV.useTransparency = true;
+}
+
+function resetAngle(){
+	angleStage = 0;
+	anglePoints = [[0.0,0.0,0.0],[0.0,0.0,0.0],[0.0,0.0,0.0]];
+}
+//---------------------------------------------------------------------------------------
+function toolsReset(){
+	presenters[0].enablePickpointMode(false);
+	pickpointSwitch();
+	presenters[0].enableMeasurementTool(false);
+	measureSwitch();
+	jQuery('#angle').css("visibility", "visible");
+	jQuery('#angle_on').css("visibility", "hidden");
+	jQuery('#angle-box').css("display","none");
+	jQuery('#angle-output').html("0.0 °");
+	presenters[0].deleteEntity("angleP");
+	presenters[0].deleteEntity("angleL");
+	presenters[0].deleteEntity("angleV");
+	sectiontoolReset();
+	sectiontoolSwitch(false);
+	clearInstructions();
+}
+//---------------------------------------------------------------------------------------
+function resetViewState(field, value){
+	VIEW_STATE["solid"] = false;
+	VIEW_STATE["transparency"] = false;
+	VIEW_STATE["lighting"] = true;
+	VIEW_STATE["specular"] = false;
+	VIEW_STATE["lightDir"] = [-0.17,-0.17];
+	displayViewState();
+}
+function updateViewState(field, value){
+	VIEW_STATE[field] = value;
+	displayViewState();
+}
+
+function displayViewState(){
+	$('#i_solidColor').bootstrapToggle((VIEW_STATE.solid)?'on':'off', true);
+	for(pi in presenters){
+		presenters[pi].setInstanceSolidColor('SPECIMEN', VIEW_STATE.solid, false);
+	}
+
+	$('#i_transparency').bootstrapToggle((VIEW_STATE.transparency)?'on':'off', true);
+	for(pi in presenters){
+		presenters[pi].setInstanceTransparency('SPECIMEN', VIEW_STATE.transparency, false);
+	}
+
+	$('#i_useLighting').bootstrapToggle((VIEW_STATE.lighting)?'on':'off', true);
+	for(pi in presenters){
+		presenters[pi].enableSceneLighting(VIEW_STATE.lighting);
+	}
+
+	$('#i_useSpecular').bootstrapToggle((VIEW_STATE.specular)?'on':'off', true);	
+	var newSpecular;
+	if(VIEW_STATE.specular)
+		newSpecular = [0.3,0.3,0.3,256.0];
+	else
+		newSpecular = [0.0,0.0,0.0,256.0];
+		for(pi in presenters){
+			for (inst in presenters[pi]._scene.modelInstances){
+				presenters[pi]._scene.modelInstances[inst].specularColor = newSpecular;
+		}
+	}
+
+	for(pi in presenters){
+		presenters[pi].rotateLight(VIEW_STATE.lightDir[0],-VIEW_STATE.lightDir[1]); // inverted y
+	}
+	updateLightController(VIEW_STATE.lightDir[0],VIEW_STATE.lightDir[1]);
+
+	for(pi in presenters){
+		presenters[pi].repaint();
+	}
+
+}
+
+function updateOrtho(value){
+	if(value){
+		for(pi in presenters){
+			presenters[pi].setCameraOrthographic();		
+		}
+		$('#i_orthoCamera')[0].checked = true;
+	}
+	else {
+		for(pi in presenters){
+			presenters[pi].setCameraPerspective();		
+		}	
+		$('#i_orthoCamera')[0].checked = false;
+	}
+}
+
+//---------------------------------------------------------------------------------------
+function showHelp(){
+	$('#helpPanel').modal("show");
+}
+//---------------------------------------------------------------------------------------
+function home(){
+	for(pi in presenters){presenters[pi].resetTrackball();}
+	// put back light as we want it, as resetTrackball() function resets it
+	for(pi in presenters){presenters[pi].rotateLight(VIEW_STATE.lightDir[0],-VIEW_STATE.lightDir[1]); /* inverted y */}	
+	updateLightController(VIEW_STATE.lightDir[0],VIEW_STATE.lightDir[1]);
+}
+//---------------------------------------------------------------------------------------
+function viewFrom(direction){
+	var distance = 2.0;
+	var averageRadius = 0.0;
+	for(pi in presenters){averageRadius += presenters[pi].sceneRadiusInv;}
+	averageRadius /= presenters.length;
+
+    switch(direction) {
+        case "front":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([0.0, 0.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;
+        case "back":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([180.0, 0.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;
+        case "top":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([0.0, 90.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;
+        case "bottom":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([0.0, -90.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;
+        case "left":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([270.0, 0.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;
+        case "right":
+			for(pi in presenters){
+				let equalDistance = 2.0 / averageRadius * presenters[pi].sceneRadiusInv;
+				presenters[pi].animateToTrackballPosition([90.0, 0.0, 0.0, 0.0, 0.0, equalDistance]);
+			}
+            break;			
+    }
+}
+
+function synchViewers(source){
+	let state = presenters[source].getTrackballPosition();
+	let zoomlevel = state[5];
+
+	for(pi in presenters){
+		if(pi != source){
+			state[5] = zoomlevel / presenters[source].sceneRadiusInv * presenters[pi].sceneRadiusInv;	//matching scale
+			presenters[pi].animateToTrackballPosition(state);
+		}
+	}
+}
+
+//---------------------------------------------------------------------------------------
+function onTrackballUpdate(trackState,presenter){
+	// DEBUG DEBUG DEBUG
+	// if it does not work anymore, remember to add this.myPresenter to onTrackballUpdate(this.getState(),this.myPresenter); in the trackball
+	for(pi in presenters){
+		if(presenter == presenters[pi]){
+			updateCube(pi, -trackState[0], -trackState[1]);
+			updateGrid(pi, trackState);
+		}
+	}
+}
+function updateCube(viewerIndex, angle, tilt) {
+    var transf = "translateZ(-100px) rotateX("+tilt+"deg) rotateY("+angle+"deg)";
+    $('#cube'+viewerIndex).css({"transform":transf});
+}
+function updateGrid(viewerIndex, trackState){
+	if (typeof presenters[viewerIndex]._scene.entities === 'undefined') return;
+	if (typeof presenters[viewerIndex]._scene.entities["gridBB"] === 'undefined') return;
+	
+	var tt=[0.0,0.0,0.0];
+	tt[0] = (trackState[2] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[0];
+	tt[1] = (trackState[3] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[1];
+	tt[2] = (trackState[4] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[2];
+	
+	var mrX = SglMat4.rotationAngleAxis(sglDegToRad(-trackState[1]), [1.0, 0.0, 0.0]);
+	var mrY = SglMat4.rotationAngleAxis(sglDegToRad(trackState[0]), [0.0, 1.0, 0.0]);
+	var mrT = SglMat4.translation(tt);
+	var matrix = SglMat4.mul(SglMat4.mul(mrT, mrY), mrX);
+	presenters[viewerIndex]._scene.entities["gridBB"].transform.matrix = matrix;
+}
+//---------------------------------------------------------------------------------------
+function fillMetadataPanel(){
+	var target = document.getElementById("panel_info");
+	target.innerHTML = "";
+
+	var content = "";
+	content +=  "<div class='col p-1 m-0 align-items-left w-100'>";
+
+	let gliphs = ["◰","◳","◱","	◲"];
+
+	for(oi in OBJCODES){
+		content += "<h5><b>" + gliphs[oi] + " " + ARCHIVE.data(OBJCODES[oi],"MUSEUM") + " " + ARCHIVE.data(OBJCODES[oi],"INVENTORY") + "</b></h5>";
+
+		content +=  `
+			<h6>
+			<table class='table table-secondary table-bordered table-striped' style='width:100%;font-size:min(1.2vw,1rem);'>
+				<tr><td>${NAMING['MATERIAL1'][LANGUAGE]}</td><td>${ARCHIVE.objects[OBJCODES[oi]]['MATERIAL1']}</td></tr>
+				<tr><td>${NAMING['CATEGORY1'][LANGUAGE]}</td><td>${ARCHIVE.objects[OBJCODES[oi]]['CATEGORY1']}</td></tr>
+				<tr><td>${NAMING['PERIOD1'][LANGUAGE]}</td><td>${ARCHIVE.objects[OBJCODES[oi]]['PERIOD1']}</td></tr>
+			</table>
+			<h6>
+		`;
+	}
+
+/*
+	content += "  </div>\n";
+	content += "<div class='cardLine'>\n";
+	content += "<table><tr><td>" + NAMING["MATERIAL1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["MATERIAL1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["CATEGORY1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["CATEGORY1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["PERIOD1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["PERIOD1"] + "</td></tr></table>";
+	content += "</div>\n";
+*/
+
+	content +=  "</div>";
+
+	/*
+	content +=  `
+		<div class='col p-1 m-0 align-items-left w-100'>
+			<h5 style='font-size:min(2vw,1.5em);'>METADATA<\/h5>
+			<h6>
+			<table class='table table-secondary table-bordered table-striped' style='width:100%;font-size:min(1.2vw,1rem);'>			
+	`;
+	
+	for(const field of META){
+		var fname = NAMING[field][LANGUAGE];
+		var fval = ARCHIVE.data(OBJCODE,field);
+		if(fval)
+			content += `<tr><td>${fname}<\/td><td> ${fval} <\/td><\/tr>`;
+	}
+			
+	content += `
+			<\/table>
+			<\/h6>
+			<h5 style='font-size:min(2vw,1.5em);'>PARADATA<\/h5>
+			<h6>
+			<table class='table table-secondary table-bordered table-striped' style='width:100%;font-size:min(1.2vw,1rem);'>
+	`;
+	
+	for(const field of PARA){
+		var fname = NAMING[field][LANGUAGE];
+		var fval = ARCHIVE.data(OBJCODE,field);
+		if(fval)
+			content += `<tr><td>${fname}<\/td><td> ${fval} <\/td><\/tr>`;
+	}	
+	
+	content += `
+			<\/table>			
+			<\/h6>
+	<\/div>`;
+	*/
+
+	target.innerHTML = content;
+}
+
+function fillNotesPanel(){
+	var target = document.getElementById("panel_notes");
+	target.innerHTML = "";
+	var content = "";
+
+	content += "<div class='col p-1 m-0 align-items-left w-100'>\n";
+	content += "  <h6>\n";
+	content += "  <div class='form-group'>";
+	content += "  <textarea class='form-control resp_font' id='i_comparisonNotes' rows='12' onchange='updateNotes();'></textarea>";
+	content += "  </div>";
+	content += "  </h6>\n";
+	content += "</div>\n";
+
+	target.innerHTML = content;
+	
+	document.getElementById("i_comparisonNotes").value = COMPARISON_ANNOTATIONS.notes;
+}
+
+function fillViewsPanel(){
+	$(".tooltip").tooltip().hide();
+	var target = document.getElementById("panel_views");
+	target.innerHTML = "";
+	var content = "";
+
+	content += `
+	<div class="col p-1 m-0 align-items-left w-100">
+	<table class="mt-2" border="1" style="width:100%;font-size:min(1.2vw,1rem);">
+	<thead><tr><th style="text-align:center">GO<\/th><th><center>Description<\/center><\/th><th> <\/th><\/thead>
+	`;
+
+	for (const view in COMPARISON_ANNOTATIONS.views){
+		content += `
+		<tr>
+		<td style="text-align:center">
+			<button data-toggle="tooltip" data-placement="top" title='Go to View' class='m-1 btn-sm btn-secondary' onclick='gotoView("${view}")'><img src='./media/view.png' width='15px'/><\/button>
+		<\/td>
+		<td><textarea class='form-control resp_font' id='i_viewText_${view}' rows='3' style='resize:none;' onchange='updateViewText("${view}",this.value);'>${COMPARISON_ANNOTATIONS.views[view].text}<\/textarea><\/td>
+		<td style="text-align:center">
+			<button data-toggle="tooltip" data-placement="top" title='Update View' class='m-1 btn-sm btn-secondary' onclick='if(confirm(\"Update View?\")) updateView("${view}");'><img src='./media/edit.png' width='15px'/><\/button><\/br>
+			<button data-toggle="tooltip" data-placement="bottom" title='Delete View' class='m-1 btn-sm btn-danger' onclick='if(confirm(\"Delete View?\")) deleteView("${view}");'><img src='./media/delete.png' width='15px'/><\/button>
+		<\/td>
+		<\/tr>
+		`;
+	}
+
+	content += `
+		<tr><td colspan="3"><button class="ml-3 my-1 btn btn-secondary btn-small" onclick="addView();" data-toggle="tooltip" data-placement="bottom" title="Add New View"><img src='./media/add.png' width='25px'/><\/button><\/td><\/tr>
+	<\/table>
+	<\/div>
+	`;
+
+	target.innerHTML = content;
+	$('[data-toggle="tooltip"]').tooltip({trigger : 'hover'});
+}
+
+function fillSpotsPanel(){
+	$(".tooltip").tooltip().hide();
+	var target = document.getElementById("panel_spots");
+	target.innerHTML = "";
+	var content = "";
+	
+	content += `
+	<div class="col p-1 m-0 align-items-left w-100">
+	<table class="mt-2" border="1" style="width:100%;font-size:min(1.2vw,1rem);">
+	<thead><tr>
+	<th style="text-align:center"><div><img src='./media/eye.png' width='20px' onclick='updateAllSpotsVis(true);'/><img src='./media/eye_off.png' width='20px' onclick='updateAllSpotsVis(false);'/><\/div><\/th>
+	<th style="text-align:center">Description<\/th>
+	<th> <\/th>
+	<th> <\/th>
+	<\/tr><\/thead>
+	`;
+
+	for (const spot in OBJECT_ANNOTATION.spots){
+	
+		// get hex color
+		let r = parseInt(OBJECT_ANNOTATION.spots[spot].color[0]*255);
+		let g = parseInt(OBJECT_ANNOTATION.spots[spot].color[1]*255);
+		let b = parseInt(OBJECT_ANNOTATION.spots[spot].color[2]*255);
+		var hxcol = "#" + r.toString(16).padStart(2, '0') + g.toString(16).padStart(2, '0') + b.toString(16).padStart(2, '0'); 
+	
+		content += `
+		<tr>
+		<td style="text-align:center">
+		<input type='checkbox' id='i_spotVis_${spot}' ${OBJECT_ANNOTATION.spots[spot].visible?'checked':''} onclick='updateSpotVis("${spot}",this.checked);' title='Visible'><\/i>
+		<\/td>
+		<td><textarea class='form-control resp_font' id='i_spotText_${spot}' rows='2' style='resize:none;' onchange='updateSpotText("${spot}",this.value);'>${OBJECT_ANNOTATION.spots[spot].text}<\/textarea><\/td>
+		<td style="text-align:center">
+			<input type='number' min='1' max='10' value='${OBJECT_ANNOTATION.spots[spot].radius}' onchange='updateSpotRadius("${spot}",this.value);' style='width:2em;' title='Radius'><\/br>
+			<input type='color' id='i_spotColor_${spot}' value='${hxcol}' onchange='updateSpotColor("${spot}",this.value);' title='Color'>
+		<\/td>		
+		<td style="text-align:center">
+			<button title='Delete Spot' class='m-1 btn-sm btn-danger' onclick='if(confirm(\"Delete Spot?\")) deleteSpot("${spot}");'><img src='./media/delete.png' width='15px'/><\/button>
+		<\/td>
+		<\/tr>
+		`;
+	}
+
+	content += `
+		<tr><td colspan="4"><button class="ml-3 my-1 btn btn-secondary btn-small" onclick="addSpot();" data-toggle="tooltip" data-placement="bottom" title="Add New Spot"><img src='./media/add.png' width='25px'/><\/button><\/td><\/tr>
+	<\/table>
+	<\/div>
+	`;
+
+	target.innerHTML = content;	
+	$('[data-toggle="tooltip"]').tooltip({trigger : 'hover'});	
+}
+
+function fillScenePanel(){
+	$(".tooltip").tooltip().hide();
+	var models = ARCHIVE.data(OBJCODE,"3D_OBJECT_ID");
+	
+	if(models.constructor != Array)	//just single model, skip this
+	return;
+	
+	//show scene tab
+	document.querySelector("#scene-tab-li").style.display = "block"
+	
+	var target = document.getElementById("panel_scene");
+	target.innerHTML = "";
+	var content = "";
+	
+	content += "<div class='col p-1 m-0 align-items-left w-100'>";
+	content += "<h5 class='mb-3' style='font-size:min(1.5vw, 1.5rem);'>Components:</h5>";
+
+	models.forEach((item, ind) => {
+		var instName = "model_specimen_" +ind;
+		content += `
+		<h6 style='font-size:min(1.5vw, 1rem);'><b>${ind}<\/b> <input id="" class="mx-2" type="checkbox" checked style="transform:translateY(min(0.3vw, 0.3rem)); width:min(1.5vw, 1rem); height:min(1.5vw, 1.5rem); cursor:hand;" onclick="presenters[0].toggleInstanceVisibilityByName('${instName}',true);"> ${item} <\/h6>
+		`;
+	});
+
+	content += "<\/div>";
+
+	target.innerHTML = content;	
+	$('[data-toggle="tooltip"]').tooltip({trigger : 'hover'});	
+}
+
+
+
+//---------------------------------------------------------------------------------------
+
+
+
+function updateNotes(){
+	COMPARISON_ANNOTATIONS.notes = document.getElementById("i_comparisonNotes").value;
+	collectionSynch();
+}
+
+function saveAnnotations(){
+	//create an annotation entity to save
+	var annotation = {};
+	annotation.type = "comparison";
+	annotation.comparison_id = COMPCODE;
+	annotation.objects_id = OBJCODES;
+	annotation.annotations = jsonCopy(COMPARISON_ANNOTATIONS);
+
+	var element = document.createElement('a');
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(annotation, null, 2)));
+	element.setAttribute('download', "ann_"+COMPCODE+".json");
+
+	element.style.display = 'none';
+	document.body.appendChild(element);
+
+	element.click();
+
+	document.body.removeChild(element);
+	toastr.success('Annotations Exported');
+}
+
+function loadAnnotations(){
+	document.getElementById("i_JSON").click();
+}
+function getJSON(files){
+	if((files)&&(files.length>0)){
+	    var reader = new FileReader();
+		reader.onload = importJSON;
+		reader.readAsText(event.target.files[0]);
+	}
+}
+function importJSON(event){
+    var annotation = JSON.parse(event.target.result);
+	
+	if(annotation.comparison_id != COMPCODE){
+		toastr.error('Comparison Mismatch');
+		return;
+	}
+	
+	COMPARISON_ANNOTATIONS = jsonCopy(annotation.annotations);
+	fillNotesPanel();
+	fillViewsPanel();
+
+	toastr.success('Annotations Loaded');
+}
+function collectionSynch(){
+	if(SESSION_ID != window.localStorage.getItem("DC_SESSIONID")){
+		toastr.error('ERROR: LOST SYNCH WITH DYNAMIC COLLECTIONS PAGE');
+		return;
+	}
+
+	var message = {};
+	message.session = SESSION_ID;
+	message.action = "update_comparison";
+	message.target = COMPCODE;
+	message.payload = JSON.stringify(COMPARISON_ANNOTATIONS);
+	
+	MESSAGECHANNEL.postMessage(message);
+}
+
+function addView(){
+	var newName = "V_" + COMPARISON_ANNOTATIONS.newIndex++;
+	var newView = {};
+	newView.views = [null,null];
+	newView.state = {};
+	newView.tools = {};
+	newView.text = "Description of view " + (COMPARISON_ANNOTATIONS.newIndex-1);
+	COMPARISON_ANNOTATIONS.views[newName] = newView;
+	updateView(newName);
+	fillViewsPanel();
+}
+function updateViewText(viewID, text){
+	COMPARISON_ANNOTATIONS.views[viewID].text = text;
+	collectionSynch();
+}
+function updateView(viewID){
+	for(pi in presenters){
+		COMPARISON_ANNOTATIONS.views[viewID].views[pi] = track2view(presenters[pi].getTrackballPosition(),pi);
+	}
+	for(field in VIEW_STATE)
+	COMPARISON_ANNOTATIONS.views[viewID].state[field] = VIEW_STATE[field];
+
+	collectionSynch();
+}
+function deleteView(viewID){
+	delete COMPARISON_ANNOTATIONS.views[viewID];
+	collectionSynch();
+	fillViewsPanel();
+}
+
+function gotoView(viewID){
+	for(field in COMPARISON_ANNOTATIONS.views[viewID].state)
+		VIEW_STATE[field] = COMPARISON_ANNOTATIONS.views[viewID].state[field];
+	displayViewState();
+	for(pi in presenters){
+		presenters[pi].animateToTrackballPosition(view2track(COMPARISON_ANNOTATIONS.views[viewID].views[pi],pi));		
+	}	
+	if(COMPARISON_ANNOTATIONS.views[viewID].views[0].fov == "0")
+		updateOrtho(true);
+	else
+		updateOrtho(false);
+}
+
+
+function addSpot(){
+	if(IS_EDITING) return;
+	presenters[0]._onEndPickingPoint = pickSpot;
+	presenters[0].enablePickpointMode(true);
+	$('#draw-canvas').css("cursor","crosshair");
+	IS_EDITING = true;
+}
+function pickSpot(pos){
+	presenters[0]._onEndPickingPoint = null;
+	presenters[0].enablePickpointMode(false);
+	$('#draw-canvas').css("cursor","default");
+	IS_EDITING = false;
+
+	//undo object transform	
+	var opoint = [pos[0], pos[1], pos[2], 1.0];	
+	var tpoint = SglMat4.mul4(SglMat4.inverse(presenters[0]._scene.modelInstances["model_specimen_0"].transform.matrix), opoint);
+	
+	var newName = "S_" + OBJECT_ANNOTATION.newIndex++;
+	var newSpot = {};
+	newSpot.pos = [tpoint[0],tpoint[1],tpoint[2]];
+	newSpot.text = "spot " + (OBJECT_ANNOTATION.newIndex-1);
+	newSpot.visible = true;
+	newSpot.radius = 3.0;
+	newSpot.color = [0.9, 0.2, 0.2];
+	newSpot.group = 1;
+	OBJECT_ANNOTATION.spots[newName] = newSpot;
+	collectionSynch();
+	fillSpotsPanel();
+	displaySpots();
+}
+function cancelPicking(){	
+}
+function updateSpotText(spotID, text){
+	OBJECT_ANNOTATION.spots[spotID].text = text;
+	collectionSynch();
+}
+function updateSpotRadius(spotID, value){
+	OBJECT_ANNOTATION.spots[spotID].radius = value;
+	collectionSynch();
+	displaySpots();	
+}
+function updateSpotColor(spotID, value){
+	const r = parseInt(value.substr(1,2), 16)
+	const g = parseInt(value.substr(3,2), 16)
+	const b = parseInt(value.substr(5,2), 16)
+	OBJECT_ANNOTATION.spots[spotID].color = [r/255.0, g/255.0, b/255.0];
+	collectionSynch();
+	displaySpots();	
+}
+function deleteSpot(spotID){
+	delete OBJECT_ANNOTATION.spots[spotID];
+	collectionSynch();
+	fillSpotsPanel();
+	displaySpots();
+}
+
+function updateSpotVis(spotID, visible){
+	OBJECT_ANNOTATION.spots[spotID].visible=visible;
+	presenters[0].setSpotVisibilityByName(spotID,visible,true);
+}
+function updateAllSpotsVis(visible){
+	for (const spot in OBJECT_ANNOTATION.spots){	
+		OBJECT_ANNOTATION.spots[spot].visible=visible;
+		presenters[0].setSpotVisibilityByName(spot,visible,false);
+		presenters[0].repaint();
+		fillSpotsPanel(); // easier to rebuild the panel, than to individually set all checkboxes		
+	}
+}
+
+function displaySpots(){
+	if(!presenters[0]._scene) return;
+	presenters[0]._scene.spots = {};
+	presenters[0]._spotsProgressiveID = 10;	// reset to avoid accumulation
+	
+	for (const spot in OBJECT_ANNOTATION.spots){
+		var radius = 1.0;
+		if(ARCHIVE.data(OBJCODE,"MEASURE_UNIT") === "mm")
+			radius = OBJECT_ANNOTATION.spots[spot].radius;
+		else if(ARCHIVE.data(OBJCODE,"MEASURE_UNIT") === "m")
+			radius = 0.01 * OBJECT_ANNOTATION.spots[spot].radius;
+
+		// place according to current object transform
+		var opoint = [OBJECT_ANNOTATION.spots[spot].pos[0], OBJECT_ANNOTATION.spots[spot].pos[1], OBJECT_ANNOTATION.spots[spot].pos[2], 1.0];
+		var tpoint = SglMat4.mul4(presenters[0]._scene.modelInstances["model_specimen_0"].transform.matrix, opoint);
+
+		var newSpot = {
+			mesh            : "sphere",
+			color           : OBJECT_ANNOTATION.spots[spot].color,
+			alpha           : 0.7,
+			transform : { 
+				translation : [tpoint[0],tpoint[1],tpoint[2]],
+				scale : [radius, radius, radius],
+				},
+			visible         : OBJECT_ANNOTATION.spots[spot].visible,
+		};
+		presenters[0]._scene.spots[spot] = presenters[0]._parseSpot(newSpot);	
+		presenters[0]._scene.spots[spot].rendermode = "FILL";  //maybe this is not necessary
+	}	
+	
+	presenters[0].repaint();
+	
+	presenters[0].enableOnHover(true);
+	presenters[0]._onEnterSpot = onESpot;
+	presenters[0]._onLeaveSpot = onLSpot;	
+}
+
+function onESpot(id){
+	document.getElementById("spot_display").innerHTML = "<h4>"+OBJECT_ANNOTATION.spots[id].text+"</h4>";
+}
+function onLSpot(id){
+	document.getElementById("spot_display").innerHTML = "";
+}
+
+//---------------------------------------------------------
+function track2view(trackState,viewerIndex){
+	var view = {};
+	view.space = "object";
+	view.position = [0.0,0.0,0.0];
+	view.target = [0.0,0.0,0.0];
+	view.up = [0.0,0.0,0.0];
+	view.fov = 0.0;
+	// target is trackball center
+	view.target[0] = (trackState[2] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[0];
+	view.target[1] = (trackState[3] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[1];
+	view.target[2] = (trackState[4] / presenters[viewerIndex].sceneRadiusInv) + presenters[viewerIndex].sceneCenter[2];
+	// position is [0,0,distance], rotated on X and Y, added to target
+	var dist = trackState[5] / presenters[viewerIndex].sceneRadiusInv;
+	var vp = [0.0, 0.0, dist, 1.0];
+	vp = SglMat4.mul4(SglMat4.rotationAngleAxis(sglDegToRad(trackState[1]), [-1.0, 0.0, 0.0]), vp);
+	vp = SglMat4.mul4(SglMat4.rotationAngleAxis(sglDegToRad(trackState[0]), [0.0, 1.0, 0.0]), vp);
+	view.position[0] = vp[0] + view.target[0];
+	view.position[1] = vp[1] + view.target[1];
+	view.position[2] = vp[2] + view.target[2];
+	// up is unit vertical vector, rotated on X and Y
+	var vu = [0.0, 1.0, 0.0, 1.0];
+	vu = SglMat4.mul4(SglMat4.rotationAngleAxis(sglDegToRad(trackState[1]), [-1.0, 0.0, 0.0]), vu);
+	vu = SglMat4.mul4(SglMat4.rotationAngleAxis(sglDegToRad(trackState[0]), [0.0, 1.0, 0.0]), vu);
+	view.up[0] = vu[0];
+	view.up[1] = vu[1];
+	view.up[2] = vu[2];
+	
+	if(presenters[viewerIndex].getCameraType() == "orthographic")
+		view.fov = 0.0;
+	else
+		view.fov = presenters[viewerIndex]._scene.space.cameraFOV;
+	return view;
+}
+function view2track(view,viewerIndex){
+	var trackState = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+	
+	trackState[2] = (view.target[0] - presenters[viewerIndex].sceneCenter[0]) * presenters[viewerIndex].sceneRadiusInv;
+	trackState[3] = (view.target[1] - presenters[viewerIndex].sceneCenter[1]) * presenters[viewerIndex].sceneRadiusInv;
+	trackState[4] = (view.target[2] - presenters[viewerIndex].sceneCenter[2]) * presenters[viewerIndex].sceneRadiusInv;
+	
+	var vdir = [(view.target[0]-view.position[0]), (view.target[1]-view.position[1]), (view.target[2]-view.position[2])];
+	var len = SglVec3.length(vdir);
+	vdir = [vdir[0] / len, vdir[1] / len, vdir[2] / len];
+	trackState[5] = len * presenters[viewerIndex].sceneRadiusInv;
+
+	trackState[1] = sglRadToDeg(-Math.asin(vdir[1]));
+	trackState[0] = sglRadToDeg(Math.asin(-vdir[0] / Math.cos(Math.asin(-vdir[1]))));		
+
+	if((trackState[1]<45.0)&&(trackState[1]>-45.0)){
+		trackState[0] = sglRadToDeg(Math.asin(-vdir[0] / Math.cos(Math.asin(-vdir[1]))));
+		if(vdir[2]>0.0) trackState[0] = 180.0 - trackState[0];
+	}
+	else 	// if tilt is large, better get heading from the up vector
+	{
+		trackState[0] = sglRadToDeg(Math.asin(-view.up[0] / Math.cos(Math.asin(-view.up[1]))));
+		if(view.up[2]>0.0) trackState[0] = 180.0 - trackState[0];
+	}
+
+	return trackState;
+}
+//---------------------------------------------------------
+
+function collapseControls(){
+	const rows = document.querySelectorAll('.myCollapse');
+
+	rows.forEach(row => {	
+		if(row.style.display == "none"){
+			row.style.display = "flex";
+			row.style.height = "auto";			
+		}
+		else{
+			row.style.display = "none";
+			row.style.height = "0px";
+		}
+	});
+
+	onPageResize();
+}
+
+//---------------------------------------------------------------------------------------
+function onPageResize(){
+
+	for(pi in presenters){
+		if(presenters[pi]){
+			resizeCanvas(pi,$('#3dhop'+pi).parent().width(),$('#3dhop'+pi).parent().height());
+			presenters[pi].repaint();
+		}
+	}
+
+	var remainingH = $('#right_column').height() -$('#rr1').height() -$('#rr2').height() -$('#rr3').height() -$('#rr5').height();
+
+	$('#rr6').height(remainingH);
+		
+	resizeLightController();
+	updateLightController(VIEW_STATE.lightDir[0],VIEW_STATE.lightDir[1]);
+}
+//---------------------------------------------------------------------------------------
+$(document).ready(function(){
+	// get current session
+	SESSION_ID = window.localStorage.getItem("DC_SESSIONID");
+	
+	// looking for parameters in webpage address
+	var pageParams = parsePageParams();
+	if(pageParams["comp"]){
+		COMPCODE = decodeURIComponent(pageParams["comp"]);
+	}
+	else{
+		alert("ERROR, COMPARISON NOT SPECIFIED");
+		return;
+	}
+	
+	// JSON loading of collection list
+	var anticache = "?v=" + Math.floor(Math.random() * 1000);
+    jQuery.getJSON("./data/" + LISTFILE + anticache, function(data){
+		// now I have a local copy of the archive objects
+		ARCHIVE.objects = data;
+
+		// message channel to send updates to collection
+		MESSAGECHANNEL = new BroadcastChannel('dyncoll_channel');
+
+		// accessing collection data from local storage
+		var storedC = window.localStorage.getItem("DC_COLLECTION");
+		if(storedC) {
+			COLLECTION = JSON.parse(storedC);
+			Object.setPrototypeOf(COLLECTION, Collection.prototype);	//I have loaded the raw data content, but I need to set the prototype to the Collection class
+		}
+		else {
+			alert("ERROR: FAILED TO SYNCH WITH DYNAMIC COLLECTIONS PAGE");
+			return;
+		}
+
+		// getting the list of objects to compare
+		OBJCODES = COLLECTION.comparisons[COMPCODE].objects;
+
+		// in the annotation, I take note of which are the object
+		COMPARISON_ANNOTATIONS.objectsID = OBJCODES;
+
+		// fill interface	
+		var cmpName=COLLECTION.comparisons[COMPCODE].name;
+		document.getElementById("sp_objDetails").innerHTML = "<h5><b>" + cmpName + "</b></h5>";
+		//change header color 
+		document.getElementById("rr1").classList.add("bg_card_comp");
+		document.title = COLLECTION.comparisons[COMPCODE].name;
+		//object names on labels
+		for(oi in OBJCODES){
+			document.getElementById("label_obj"+oi).innerHTML = "<h5><b>" + ARCHIVE.data(COLLECTION.comparisons[COMPCODE].objects[oi],"MUSEUM") + " " + ARCHIVE.data(COLLECTION.comparisons[COMPCODE].objects[oi],"INVENTORY") + "</b></h5>";
+		}
+
+		//synch local annotations to what is already in the collection	
+		COMPARISON_ANNOTATIONS = jsonCopy(COLLECTION.comparisons[COMPCODE].annotations);
+
+		// according to the number of viewers we need, delete unused stuff
+		if(OBJCODES.length == 2){
+			document.getElementById("viewers_row1").classList.remove("h-50");
+			document.getElementById("viewers_row1").classList.add("h-100");			
+			document.getElementById("viewers_row2").remove();
+		}
+		else if(OBJCODES.length == 3){
+			document.getElementById("3dhop3").remove();	
+		}
+
+		// fill interface
+		fillMetadataPanel();
+		fillNotesPanel();
+		fillViewsPanel();
+		//fillSpotsPanel();
+		//fillScenePanel();
+
+		// create 3dhop presenters, as many as OBJCODES
+		for(pi=0; pi<OBJCODES.length; pi++){
+			presenters[pi] = new Presenter("draw-canvas"+pi);
+		}
+
+		// start viewers
+		init3dhop();
+		for(pi in presenters){
+			setup3dhop(pi);
+		}
+
+		// resize all components
+		onPageResize();
+			
+		// initialization light component
+		setupLightController();
+		// setting starting lightposition
+		for(pi in presenters){
+			presenters[pi].rotateLight(VIEW_STATE.lightDir[0],-VIEW_STATE.lightDir[1]); // inverted y
+		}
+		resizeLightController();
+		updateLightController(VIEW_STATE.lightDir[0],VIEW_STATE.lightDir[1]);
+
+		// startup grids
+		for(pi in presenters){
+			startupGrid(pi);
+		}
+	});
+
+	// toastr configuration
+	toastr.options = {
+		"positionClass": "toast-bottom-left",
+		"preventDuplicates": false,
+		"showDuration": "300",
+		"hideDuration": "300",
+		"timeOut": "2000",
+		"extendedTimeOut": "1000"
+	}	
+	
+	// start tooltips
+	$('[data-toggle="tooltip"]').tooltip({trigger : 'hover'});
+});
+
+function startupGrid(viewerIndex){
+	for(inst in presenters[viewerIndex]._scene.modelInstances){
+		let vv = presenters[viewerIndex]._scene.meshes[presenters[viewerIndex]._scene.modelInstances[inst].mesh].renderable.mesh.basev;
+		if (typeof vv === 'undefined') {
+			setTimeout(startupGrid, 50, viewerIndex);
+			return;
+		}
+	}
+	computeEncumbrance(viewerIndex);
+	addGrid(viewerIndex);
+}
+</script>
+</html>

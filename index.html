@@ -1,0 +1,1222 @@
+﻿<!DOCTYPE html>
+<html  lang="en" data-bs-theme="dark">
+<head>
+<meta content="charset=UTF-8"/>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>--Dynamic Collections--</title>
+
+<script src="js/jquery-3.6.4.min.js"></script>
+
+<!-- Bootstrap-->
+<link href="stylesheet/bootstrap.min.css" rel="stylesheet">
+<script src="js/bootstrap.bundle.min.js"></script>
+<!-- Google material design -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0" />
+<!-- DIGITAL COLLECTION CSS -->
+<link type="text/css" rel="stylesheet" href="stylesheet/digitalCollection.css"/>
+<!-- toastr -->
+<link href="stylesheet/toastr.min.css" rel="stylesheet"/>
+<script src="js/toastr.min.js"></script>
+<!-- COLLECTION CLASS -->
+<script src="js/collection.js"></script>
+<!-- CONFIGURATION -->
+<script src="curated/curatedList.js"></script>
+<!--UTILITY-->
+<script type="text/javascript" src="js/helpers.js"></script>
+
+<!------ CONFIGURATION ------>
+<script type="text/javascript" src="js/config_lund.js"></script>
+<!------ CONFIGURATION ------>
+
+</head>
+
+<!----------------------------------------------------------------->
+<body onresize="onPageResize()" >
+
+<div class="container-fluid h-100 overflow-hidden">
+
+<!--##################TITLE AREA##################-->
+<div class="row" id="header_row">
+<div class="col justify-content-center" id="">
+	<span id="siteHeader"><!--filled by function fillPageHeader--></span>
+	<div class="logos text-center">
+		<div id="siteLogos">
+			<!--filled by function fillPageHeader-->
+		</div>
+		<button type='button' class='btn btn-primary btn-sm my-2' onClick="showUpdates();">What's new</button>
+		<button type='button' class='btn btn-primary btn-sm my-2' onClick="showInfo();">More Info...</button>	
+	</div>	
+</div>
+</div>
+
+<!--##################COMMANDS AREA##################-->
+<div class="row" id="tabs_row">
+	<div class="col tb tba flex-grow-0" id="tb_query" onClick="displayQueryMode()"><p class="m-1 fw-bold">QUERY</p></div>
+	<div class="col tb flex-grow-0" id="tb_collection" onClick="displayCollectionMode()"><p class="m-1 fw-bold">COLLECTION</p></div>
+	<div class="col tbx"></div>
+</div>
+
+<div class="row" id="commands_row">
+
+<div class="col" id="query_panel">
+	<div class="row">
+		<div class="col d-flex align-items-center flex-grow-0">
+		<img src='./media/restore.png' width='30px' height="30px" data-bs-toggle="tooltip" data-bs-placement="top" title="Reset Fields" onClick="resetFields()"/>
+		</div>
+		<div class="col-7 mt-2">
+			<form>
+				<div class="d-flex">
+				  <div class="px-3">
+				  <label class="m-0" for="selectAge">Period</label>
+				  <select class="form-select" id="selectAge" onchange="updateFilters();"></select>
+				  </div>
+				  <div class="px-3">
+				  <label class="m-0" for="selectMaterial">Material</label>
+				  <select class="form-select" id="selectMaterial" onchange="updateFilters();"></select>
+				  </div>
+				  <div class="px-3">
+				  <label class="m-0" for="selectCollection">Museum</label>
+				  <select class="form-select" id="selectCollection" onchange="updateFilters();"></select>
+				  </div>
+				</div>
+				<div class="col-12 mt-2">
+					<div class="px-3">
+					<label class="m-0" for="searchString">Search String</label>
+					<input class="form-control" type="text" id="searchString" oninput="updateFilters();">
+					</div>
+				</div>
+			  </form>
+		</div>
+	</div>
+</div>
+
+<div class="col" id="collection_panel" style="display:none;">
+<div class="row" >
+
+	<div class="col-3 py-2">
+		<div class="mt-2">
+		<input id="i_collectionName" class="form-control form-control-lg" type="text" placeholder="Collection Name" value="Collection Name" onchange="updateCollectionData();">
+		</div>
+		<div class="mt-2">
+		<input id="i_collectionAuthor" class="form-control" type="text" placeholder="Author" value="Author" onchange="updateCollectionData();">
+		</div>
+	</div>
+
+	<div class="col-7 py-1" >
+	  <div class="m-1">
+		<textarea class="form-control" id="i_collectionNotes" rows="7" style="resize:none;" onchange="updateCollectionData();" placeholder="Collection Notes"></textarea>
+	  </div>
+	</div>
+
+	<div class="col-2 align-items-center py-2">
+		<center>
+		<div class="dropdown">
+		  <button class="btn btn-warning dropdown-toggle" type="button" disabled id="bt_curated" data-bs-toggle="dropdown">Curated Collections</button>
+		  <div class="dropdown-menu" id="i_collectionsList"></div>
+		</div>
+		<hr/>
+		<button id="bt_loadColl" type='button' class='btn btn-warning btn-sm mt-2' onClick="loadCollJSON()">Load Collection</button>
+		<button id="bt_saveColl" type='button' class='btn btn-warning btn-sm mt-2' onClick="saveCollJSON()">Export Collection</button>
+		<input type="file" id="i_JSON" accept=".json,.JSON,.Json" style="display:none" onchange="getJSON(this.files);"/>
+		</center>
+	</div>
+
+</div>
+</div>
+
+<div class="col flex-grow-0 p-2" style="min-width:15rem;">
+	<div class="m-1">
+	  <h5 class="text-end">
+	  Total Records <span id="num_rec" class="badge rounded-pill bg-secondary" style="margin-top: 2px;">0</span></br>
+	  Filtered Records <span id="num_query" class="badge rounded-pill bg-secondary" style="margin-top: 2px;">0</span></br>
+	  Collected Records <span id="num_coll" class="badge rounded-pill bg-secondary" style="margin-top: 2px;">0</span></br>
+	  </h5>
+	</div>
+	<div class="m-1">
+	<center>
+	<button id="bt_lockColl" type='button' class='btn btn-success' onClick="lockCollection(true)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Lock Collection">&#128275;</button>
+	<button id="bt_unlockColl" type='button' class='btn btn-danger' style="display:none" onClick="lockCollection(false)" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unlock Collection">&#128272;</button>
+	<button id="bt_deleteColl" type='button' class='btn btn-danger' onClick="deleteCollection()" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clear Collection">&#128465;&#65039;</button>
+	</center>
+	</div>
+</div>
+
+</div>
+
+<!--##################LISTS AREA##################-->
+<div id="objects_row" class="row overflow-hidden">
+
+<!--MAIN LIST-->
+<div id="list_col" class="col overflow-auto">
+	<div id="list_area" class="row justify-content-around ">
+	</div>
+</div><!--list col-->
+
+<!--USED FOR SELECTED-->
+<div id="sel_col" class="col-0 overflow-auto">
+	<div id="sel_area" class="row justify-content-around ">
+	</div>
+</div><!--sel col-->
+
+</div>
+<!--##################LIST##################-->
+
+</div>
+
+
+<!--###### MODAL INFO ######-->
+<div class="modal fade" id="infoPanel" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myLabel">Dynamic Collections</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="siteInfo">
+		
+		<!--filled by function fillPageHeader-->
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--#########################################################################-->
+
+
+<!--###### MODAL UPDATES ######-->
+<div class="modal fade" id="updatesPanel" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="myLabel">Dynamic Collections</h5>
+		<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="siteNews">
+				
+			<!--filled by function fillPageHeader-->
+		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--#########################################################################-->
+
+
+<!--###### MODAL EDIT COMPARISON ######-->
+<div class="modal fade" id="editCollectionPanel" data-bs-backdrop="static" tabindex="-1" role="dialog">
+	<div class="modal-dialog modal-lg" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="myLabel">Comparison</h5>
+		  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		</div>
+		<div class="modal-body">
+				  
+		<form>
+			<div class="col-6">
+			<label for="i_comparisonName" class="form-label">Comparison Name</label>
+			<input id="i_comparisonName" class="form-control" type="text" value="----">
+			</div>
+		</form>
+		<br/>
+	
+		<span id="comparisonSelectionArea" class="col-10"></span>
+		  
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+			<button type="button" class="btn btn-primary" onClick="updateComparison();">Apply</button>
+		</div>
+	  </div>
+	</div>
+  </div>
+<!--#########################################################################-->
+
+
+
+
+</body>
+
+
+<script type="text/javascript" charset="utf-8">
+//----------------------------------------------
+var SESSION_ID = null;
+var ARCHIVE = new Archive();
+var COLLECTION = new Collection();
+var DISPLAYMODE = "query";
+var COLLECTIONLOCKED = false;
+var CURRENTSEL = -1;
+var STATS = {
+  num_rec : 0,
+  num_query : 0,
+  num_coll : 0,
+};
+var MESSAGECHANNEL = null;
+//----------------------------------------------
+
+
+//---------------------------------------------------------------------------------------
+function onPageResize(){
+	
+	var remainingH = window.innerHeight - $('#tabs_row').height() - $('#header_row').height() - $('#commands_row').height() - 2;
+
+	$('#objects_row').height(remainingH);
+	$('#list_col').height(remainingH);
+	$('#sel_col').height(remainingH);
+}
+//---------------------------------------------------------------------------------------
+function showInfo(){
+	$('#infoPanel').modal('show')
+}
+function showUpdates(){
+	$('#updatesPanel').modal('show')
+}
+//---------------------------------------------------------------------------------------
+
+function fillFilters(){
+var SA = document.getElementById("selectAge");
+	for (const age of ageFilterOptions){
+		var option = document.createElement("option");
+		option.text = age;
+		SA.add(option);
+	}
+	var SM = document.getElementById("selectMaterial");
+	for (const material of materialFilterOptions){
+		var option = document.createElement("option");
+		option.text = material;
+		SM.add(option);
+	}
+	var SC = document.getElementById("selectCollection");
+	for (const collection of collectionFilterOptions){
+		var option = document.createElement("option");
+		option.text = collection;
+		SC.add(option);
+	}
+}
+
+function updateFilters(){
+	updateList();
+	CURRENTSEL = -1;
+}
+
+function resetFields(){
+	document.getElementById("selectAge").selectedIndex = 0;
+	document.getElementById("selectMaterial").selectedIndex = 0;
+	document.getElementById("selectCollection").selectedIndex = 0;
+	document.getElementById("searchString").selectedIndex = 0;
+	updateList();
+	CURRENTSEL = -1;
+}
+//---------------------------------------------------------------------------------------
+
+function cardClicked(cardID){
+	var objCode = cardID.slice(5);
+	var oldSel = CURRENTSEL;
+	CURRENTSEL = objCode;
+
+	document.getElementById("sel_col").classList.remove("col-0");
+	document.getElementById("sel_col").classList.add("col-3");
+
+	updateCard(oldSel);
+	updateCard(CURRENTSEL);
+	if(CURRENTSEL==objCode)
+		fillSelected(CURRENTSEL);
+
+	document.getElementById(cardID).scrollIntoView({behavior: 'smooth'});
+}
+
+//---------------------------------------------------------------------------------------
+
+function displayQueryMode(){
+	if (DISPLAYMODE == "query") return;
+	document.getElementById("tb_query").classList.toggle("tba");
+	document.getElementById("tb_collection").classList.toggle("tba");
+	DISPLAYMODE = "query";
+
+	document.getElementById("query_panel").style.display = "block";
+	document.getElementById("collection_panel").style.display = "none";
+
+	//$("#list_area").sortable("disable");
+
+	CURRENTSEL = -1;
+	updateList();
+}
+
+function displayCollectionMode(){
+	if (DISPLAYMODE == "collection") return;
+	document.getElementById("tb_query").classList.toggle("tba");
+	document.getElementById("tb_collection").classList.toggle("tba");
+	DISPLAYMODE = "collection";
+
+	document.getElementById("query_panel").style.display = "none";
+	document.getElementById("collection_panel").style.display = "block";
+
+	//$("#list_area").sortable("enable");
+
+	CURRENTSEL = -1;
+	updateList();
+}
+
+//---------------------------------------------------------------------------------------
+function viewObject(objCode){
+	var newUrl = "./single_viewer.html";
+	newUrl += "?obj="+objCode;
+
+	if(DISPLAYMODE == "collection"){
+		newUrl += "&coll=true";
+		storeCurrentCollection();
+	}
+
+	window.open(newUrl, "_blank");
+}
+
+function viewComparison(compCode){
+	if(COLLECTION.comparisons[compCode].objects.length < 2){
+		toastr.error('Cannot view: comparison must have at least 2 objects'); return;
+	}
+
+	var newUrl = "./comparison_viewer.html";
+	newUrl += "?comp=" + compCode;
+	storeCurrentCollection();
+
+	window.open(newUrl, "_blank");
+}
+
+function collectObject(objCode,state){
+	if(COLLECTIONLOCKED){toastr.error('Collection locked'); return;}
+
+	for(comp in COLLECTION.comparisons){
+		if(COLLECTION.comparisons[comp].objects.includes(objCode)){
+			toastr.error('Object is part of a comparison'); return;
+		}
+	}
+
+	if ((COLLECTION.hasObjectNotes(objCode))||(COLLECTION.hasObjectAnnotations(objCode)))
+		if(!confirm('Remove from Collection? Object has notes/annotations')) return;
+
+	ARCHIVE.objects[objCode].collected = state;
+
+	if(state){
+		STATS.num_coll++;
+
+		updateCard(objCode);
+		if(CURRENTSEL==objCode)
+			fillSelected(CURRENTSEL);
+		
+		// add empty entry in collection
+		COLLECTION.objects[objCode] = {};
+		storeCurrentCollection();
+	}
+	else{
+		STATS.num_coll--;
+
+		if(DISPLAYMODE == "query"){
+			updateCard(objCode);
+			if(CURRENTSEL==objCode)
+				fillSelected(CURRENTSEL);
+		}
+		else{
+			var cardID = "card_" + objCode;
+			closeTooltips();
+			document.getElementById(cardID).remove();
+			if(CURRENTSEL==objCode){
+				if(document.getElementById("selectedCard"))
+					document.getElementById("selectedCard").remove();
+				document.getElementById("sel_col").classList.remove("col-3");
+				document.getElementById("sel_col").classList.add("col-0");
+				CURRENTSEL = -1;
+			}
+		}
+		
+		//delete entry from collection
+		delete COLLECTION.objects[objCode];
+		storeCurrentCollection();
+	}
+
+	document.getElementById("num_coll").innerHTML = STATS.num_coll;
+}
+
+
+//---------------------------------------------------------------------------------------
+
+function fillSelected(objCode){
+
+	var target = document.getElementById("sel_area");
+	target.innerHTML = "";
+
+	var thumbnail = getLargeThumb(objCode);
+	
+	var content = "";
+
+	content += `
+	<div id='selectedCard' class='card col m-3 bg_card sel_card'>
+	<div class='col p-0 my-1 border text-center align-items-center'>
+	  <img class='' src='${thumbnail}' width='100%' style='object-fit:contain; max-height:512px;'/>
+	<\/div>`;
+	
+	content += `
+	<div class='d-flex p-0 my-2 justify-content-evenly'>
+	  <button id="bt_viewS_${objCode}" type="button" class="btn btn-primary btn-sm" onClick="arguments[0].stopPropagation();viewObject('${objCode}');">View</button>`;
+	
+	if(ARCHIVE.objects[objCode].collected){
+		content += "<button id='bt_decollectS_"+objCode+"'type='button' class='btn btn-danger btn-sm' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",false);'>Collected</button>";
+	}
+	else{
+		content += "<button id='bt_collectS_"+objCode+"'type='button' class='btn btn-primary btn-sm' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",true);'>Collect</button>";
+	}
+	content += "</div>\n";
+
+	// check if I have to show notes
+	var displayNotes = (DISPLAYMODE == "collection")?"block":"none";
+
+	content += `
+	<div class='col p-0 m-0 align-items-left w-100'>
+	<ul class="nav nav-tabs" id="selectedTabs" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button class="nav-link active" id="mTab" data-bs-toggle="tab" data-bs-target="#selectedMeta" type="button" role="tab">Metadata</button>
+		<\/li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" id="pTab" data-bs-toggle="tab" data-bs-target="#selectedPara" type="button" role="tab">Paradata</button>
+		<\/li>
+		<li class="nav-item" style="display:${displayNotes};" role="presentation">
+			<button class="nav-link" id="nTab" data-bs-toggle="tab" data-bs-target="#selectedNotes" type="button" role="tab">Notes</button>				
+		<\/li>
+	<\/ul>
+	<div class="tab-content" id="selectedTabsContent">
+		<div class="tab-pane fade show active" id="selectedMeta" role="tabpanel">
+			<h6>
+			<table class='table table-secondary table-bordered table-striped' style='width:100%;font-size:min(1.2vw,1rem);'>
+	`;
+	
+	for(const field of META){
+		var fname = NAMING[field][LANGUAGE];
+		var fval = ARCHIVE.data(objCode,field);
+		if(fval)
+			content += `<tr><td>${fname}<\/td><td> ${fval} <\/td><\/tr>`;
+	}
+			
+	content += `
+			<\/table>
+			<\/h6>
+		<\/div>
+		<div class="tab-pane fade" id="selectedPara" role="tabpanel">
+			<h6>
+			<table class='table table-secondary table-bordered table-striped' style='width:100%;font-size:min(1.2vw,1rem);'>
+	`;
+	
+	for(const field of PARA){
+		var fname = NAMING[field][LANGUAGE];
+		var fval = ARCHIVE.data(objCode,field);
+		if(fval)
+			content += `<tr><td>${fname}<\/td><td> ${fval} <\/td><\/tr>`;
+	}	
+	
+	content += `			
+			<\/table>
+			<\/h6>
+		<\/div>
+		<div class="tab-pane fade" id="selectedNotes" role="tabpanel">
+			<h6>
+			<div class="form-group">
+				<textarea class="form-control" id="i_selectedNotes" rows="10" style="resize:none;" onchange="updateObjectNotes('${objCode}', this.value)" placeholder="Object Notes"><\/textarea>
+			<\/div>
+			<\/h6>
+		<\/div>
+	<\/div>
+	<\/div>
+	<\/div>	
+	`;
+
+	content += "</div>\n";
+
+	target.innerHTML = content;
+
+	// fill notes if present and in collection mode, and make it read-only if collection is locked
+	if (DISPLAYMODE == "collection"){
+		if(COLLECTION.objects[objCode].notes)
+			document.getElementById("i_selectedNotes").value = COLLECTION.objects[objCode].notes;
+		if(COLLECTIONLOCKED)
+			document.getElementById("i_selectedNotes").readOnly = true;
+	}
+
+	if(ARCHIVE.objects[objCode].collected){
+		document.getElementById("selectedCard").classList.remove("bg_card");
+		document.getElementById("selectedCard").classList.add("bg_card_col");
+	}
+
+}
+
+//---------------------------------------------------------------------------------------
+
+function updateList(){
+	closeTooltips();
+
+	//remove selected card
+	if(document.getElementById("selectedCard"))
+		document.getElementById("selectedCard").remove();
+	// restore single column
+	document.getElementById("sel_col").classList.remove("col-3");
+	document.getElementById("sel_col").classList.add("col-0");
+
+	if(DISPLAYMODE == "query"){
+		updateListQuery();
+	}
+	else if(DISPLAYMODE == "collection"){
+		updateListCollection();
+	}
+}
+
+function updateListQuery(){
+	var filterAge = ageFilterOptions[document.getElementById("selectAge").selectedIndex];
+	var filterMaterial = materialFilterOptions[document.getElementById("selectMaterial").selectedIndex];
+	var filterCollection = collectionFilterOptions[document.getElementById("selectCollection").selectedIndex];
+	var searchString =  document.getElementById("searchString").value;
+
+	STATS.num_query=0;	
+	for(objCode in ARCHIVE.objects){
+			var isQueried = true;
+				
+			if(filterAge != "ALL"){
+				// horrible hack, if age filter equals Stenålder, i need to select all periods ending with litikum: paleo-meso-neo 
+				if (filterAge.toLowerCase() == "stenålder") filterAge = "litikum";
+				if ((ARCHIVE.data(objCode,"PERIOD1")).toLowerCase().indexOf(filterAge.toLowerCase()) == -1) isQueried = false;
+			}
+			if((filterMaterial != "ALL")&&((ARCHIVE.data(objCode,"MATERIAL1")).toLowerCase().indexOf(filterMaterial.toLowerCase()) == -1)) isQueried = false;
+			if((filterCollection != "ALL")&&((ARCHIVE.data(objCode,"MUSEUM")).toLowerCase().indexOf(filterCollection.toLowerCase()) == -1)) isQueried = false;
+			if((searchString!="")&&(ARCHIVE.findString(objCode,searchString)==false)) isQueried = false;
+			
+			// always avoid non-visible objects
+			if(ARCHIVE.data(objCode,"VISIBLE")==false)
+				isQueried = false;
+				
+			if(isQueried) STATS.num_query++;
+			ARCHIVE.objects[objCode].queried = isQueried;
+			ARCHIVE.objects[objCode].selected = false;
+		}
+	document.getElementById("num_query").innerHTML = STATS.num_query;
+
+	var target = document.getElementById("list_area");
+	newContent = "";
+
+	for(objCode in ARCHIVE.objects){
+		if(ARCHIVE.objects[objCode].queried)
+			newContent += newCardObject(objCode);
+	}
+
+	target.innerHTML = newContent;
+	enableTooltips();
+	onPageResize();		
+}
+
+function updateListCollection(){
+	var target = document.getElementById("list_area");
+	newContent = "";
+
+	newContent += "<h5 class='m-2'>OBJECTS</h5>";
+	for(objCode in COLLECTION.objects){
+			newContent += newCardCollection(objCode);
+	}
+
+	newContent += "<hr class='m-2'>";
+
+	newContent += "<h5 class='m-2'>COMPARISONS</h5>";
+	for(compCode in COLLECTION.comparisons){
+			newContent += newCardComparison(compCode);
+	}
+
+	newContent += "<div class='col-2'><button type='button' class='btn btn-primary btn-lg mt-4' onClick='addNewComparison();'>New Comparison</br>...</button></div>";
+
+	target.innerHTML = newContent;
+	enableTooltips();
+	onPageResize();	
+}
+
+//-----------------------------------------------------------------
+//-----------------------------------------------------------------
+
+function newCardObject(objCode){
+	if(objCode==-1) return "";
+
+	var cardID = "card_" + objCode;
+	var cardColor = "bg_card";
+	if(ARCHIVE.objects[objCode].collected) cardColor = "bg_card_col";
+	if(objCode == CURRENTSEL) cardColor += " bg_card_sel2";
+	var displayCOLL = ARCHIVE.objects[objCode].collected ? "none":"block";
+	var displayDECOLL = ARCHIVE.objects[objCode].collected ? "block":"none";
+	var thumbnail = getSmallThumb(objCode);
+	var objIndex = objCode.split("_")[0];
+
+	content = "";
+	content += "<div id='" + cardID + "' class='card obj_card m-2 text-center "+cardColor+"' onClick='cardClicked(this.id);'>";
+	content += "<div class='card-body px-1 py-0'>\n";
+	content += "  <div class='obj_index'>"+objIndex+"</div>\n";
+	content += "  <img class='obj_thumb my-1' src='"+thumbnail+"' loading='lazy'/>\n";
+	content += "  <div class='cardLine mb-1'>\n";
+	content += "  <h4 class='m-0'>" + ARCHIVE.objects[objCode]["MUSEUM"] + " " + ARCHIVE.objects[objCode]["INVENTORY"] + "</h4>\n";	
+	if(ARCHIVE.data(objCode,"OBJECTNAME")){
+		content += "  <h5 class='m-0'>" + ARCHIVE.data(objCode,"OBJECTNAME") + "</h5>\n";
+	}
+
+	content += "  </div>\n";
+	content += "  <div class='cardLine'>\n";
+	content += "<table><tr><td>" + NAMING["MATERIAL1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["MATERIAL1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["CATEGORY1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["CATEGORY1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["PERIOD1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["PERIOD1"] + "</td></tr></table>";
+	content += "  </div>\n";
+	
+	content += "<div class='d-flex my-2 justify-content-around'>\n";		
+	content += "<button id='bt_view_"+objCode+"' type='button' class='btn btn-primary' onClick='arguments[0].stopPropagation();viewObject(\""+objCode+"\");' data-bs-toggle='tooltip' data-bs-placement='top' title='3D VIEW'><span class='material-symbols-outlined'>view_in_ar</span></button>";
+	content += "<button id='bt_collect_"+objCode+"'type='button' class='btn btn-primary' style='display:"+displayCOLL+";' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",true);' data-bs-toggle='tooltip' data-bs-placement='top' title='ADD TO COLLECTION'><span class='material-symbols-outlined'>box_add</span></i></button>";
+	content += "<button id='bt_decollect_"+objCode+"'type='button' class='btn btn-danger' style='display:"+displayDECOLL+";' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",false);' data-bs-toggle='tooltip' data-bs-placement='top' title='REMOVE FROM COLLECTION'><span class='material-symbols-outlined'>box</span></i></button>";
+	content += "</div>\n";
+
+	content += "</div>\n";
+
+	content += "</div>\n";
+
+	return content;
+}
+
+function newCardCollection(objCode){
+	if(objCode==-1) return "";
+
+	var cardID = "card_" + objCode;
+	var cardColor = "bg_card";
+	if(ARCHIVE.objects[objCode].collected) cardColor = "bg_card_col";
+	if(objCode == CURRENTSEL) cardColor += " bg_card_sel2";
+	var displayCOLL = ARCHIVE.objects[objCode].collected ? "none":"block";
+	var displayDECOLL = ARCHIVE.objects[objCode].collected ? "block":"none";
+	var thumbnail = getSmallThumb(objCode);
+	var objIndex = objCode.split("_")[0];
+
+	content = "";
+
+	content += "<div id='" + cardID + "' class='card obj_card m-2 text-center "+cardColor+"' onClick='cardClicked(this.id);'>";
+	content += "<div class='card-body px-1 py-0'>\n";
+	content += "  <div class='obj_index'>"+objIndex+"</div>\n";		
+/*	
+	content += "<div class='obj_iconshelf'>\n";
+	content += "<img id='"+ objCode + "_icoNotes' class='obj_icon' style='' src='./media/notes.png' title='has notes'/>";
+	content += "<img id='"+ objCode + "_icoAnn' class='obj_icon' style='' src='./media/annotations.png' title='has 3D annotations'/>";
+	content += "</div>\n";
+*/
+	content += "  <img class='obj_thumb my-1' src='"+thumbnail+"' loading='lazy'/>\n";
+	content += "  <div class='cardLine mb-1'>\n";
+	content += "  <h4 class='m-0'>" + ARCHIVE.objects[objCode]["MUSEUM"] + " " + ARCHIVE.objects[objCode]["INVENTORY"] + "</h4>\n";	
+	if(ARCHIVE.data(objCode,"OBJECTNAME")){
+		content += "  <h5 class='m-0'>" + ARCHIVE.data(objCode,"OBJECTNAME") + "</h5>\n";
+	}
+
+	content += "  </div>\n";
+	content += "<div class='cardLine'>\n";
+	content += "<table><tr><td>" + NAMING["MATERIAL1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["MATERIAL1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["CATEGORY1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["CATEGORY1"] + "</td></tr></table>";
+	content += "<table><tr><td>" + NAMING["PERIOD1"][LANGUAGE] + "</td><td>" + ARCHIVE.objects[objCode]["PERIOD1"] + "</td></tr></table>";
+	content += "</div>\n";
+	
+	content += "<div class='d-flex my-2 justify-content-around'>\n";		
+	content += "<button id='bt_view_"+objCode+"' type='button' class='btn btn-primary' onClick='arguments[0].stopPropagation();viewObject(\""+objCode+"\");' data-bs-toggle='tooltip' data-bs-placement='top' title='3D VIEW'><span class='material-symbols-outlined'>view_in_ar</span></button>";
+	content += "<button id='bt_collect_"+objCode+"'type='button' class='btn btn-primary' style='display:"+displayCOLL+";' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",true);' data-bs-toggle='tooltip' data-bs-placement='top' title='ADD TO COLLECTION'><span class='material-symbols-outlined'>box_add</span></button>";
+	content += "<button id='bt_decollect_"+objCode+"'type='button' class='btn btn-danger' style='display:"+displayDECOLL+";' onClick='arguments[0].stopPropagation();collectObject(\""+objCode+"\",false);' data-bs-toggle='tooltip' data-bs-placement='top' title='REMOVE FROM COLLECTION'><span class='material-symbols-outlined'>box_add</span></button>";
+	content += "</div>\n";
+
+	content += "</div>\n";
+
+	content += "</div>\n";
+
+	return content;
+}
+
+function newCardComparison(compCode){
+	if(compCode==-1) return "";
+
+	var cardID = "card_" + compCode;
+	var cardColor = "bg_card_comp";
+
+	content = "";
+
+	content += "<div id='" + compCode + "' class='card obj_card m-2 text-center "+cardColor+"' >";
+	content += "<div class='card-body px-1 py-0'>\n";
+
+	content += "  <div class='cardLine my-2'>\n";
+	content += "  <h4 class='m-0'>" + COLLECTION.comparisons[compCode]["name"] + "</h4>\n";	
+	content += "  </div>\n";
+
+	content += "  <div class='cardLine row'>\n";
+	for(oi in COLLECTION.comparisons[compCode].objects){
+		var objCode = COLLECTION.comparisons[compCode].objects[oi];
+		var thumbnail = getSmallThumb(objCode);
+
+		content += "<div class='col-6'>"
+		content	+= "<img class='obj_thumb_sm' src='"+thumbnail+"' loading='lazy'/></br>";
+		content += ARCHIVE.objects[objCode]["MUSEUM"] + " " + ARCHIVE.objects[objCode]["INVENTORY"];
+		content += "</div>\n";
+	}
+	content += "  </div>\n";
+	
+	content += "<div class='d-flex my-2 justify-content-around'>\n";		
+	content += "<button id='bt_viewComp_"+compCode+"' type='button' class='btn btn-primary' onClick='arguments[0].stopPropagation();viewComparison(\""+compCode+"\")' data-bs-toggle='tooltip' data-bs-placement='top' title='VIEW 3D COMPARISON'><span class='material-symbols-outlined'>view_in_ar</span></button>";
+	content += "<div class='dropdown'>";
+	content += "<button class='btn btn-primary dropdown-toggle' type='button' id='menuComp"+compCode+"' data-bs-toggle='dropdown'><span class='material-symbols-outlined'>menu</span></button>";
+	content += "<ul class='dropdown-menu' aria-labelledby='menuComp"+compCode+"'>";
+	content += "<li><a class='dropdown-item' onClick='editComparisonPanel(\""+compCode+"\");'>Edit</a></li>";
+	content += "<li><a class='dropdown-item' onClick='deleteComparison(\""+compCode+"\");'>Delete</a></li>";	
+	content += "</ul></div>" 
+	content += "</div>\n";
+
+	content += "</div>\n";  //card-body
+
+	content += "</div>\n";  //card
+
+	return content;
+}
+
+function updateCard(objCode){
+	if(objCode==-1)return;
+	var cardID = "card_" + objCode;
+
+	document.getElementById(cardID).classList.remove("bg_card","bg_card_sel","bg_card_col");
+
+	if(objCode == CURRENTSEL){
+		document.getElementById(cardID).classList.add("bg_card_sel");
+	}
+	if(ARCHIVE.objects[objCode].collected){
+		document.getElementById(cardID).classList.add("bg_card_col");
+	}
+	else{
+		document.getElementById(cardID).classList.add("bg_card");
+	}
+
+	if(ARCHIVE.objects[objCode].collected){
+		document.getElementById("bt_collect_"+objCode).style.display = "none";
+		document.getElementById("bt_decollect_"+objCode).style.display = "block";
+	}
+	else{
+		document.getElementById("bt_collect_"+objCode).style.display = "block";
+		document.getElementById("bt_decollect_"+objCode).style.display = "none";
+	}
+}
+
+
+//-----------------------------------------------------------------
+function lockCollection(state){
+	if(state){
+		COLLECTIONLOCKED = true;
+
+		document.getElementById("i_collectionName").readOnly = true;
+		document.getElementById("i_collectionAuthor").readOnly = true;
+		document.getElementById("i_collectionNotes").readOnly = true;
+
+		if(document.getElementById("i_selectedNotes"))
+			document.getElementById("i_selectedNotes").readOnly = true;
+
+		document.getElementById("bt_lockColl").style.display = "none";
+		document.getElementById("bt_unlockColl").style.display = "inline-block";
+	}
+	else{
+		COLLECTIONLOCKED = false;
+		document.getElementById("i_collectionName").readOnly = false;
+		document.getElementById("i_collectionAuthor").readOnly = false;
+		document.getElementById("i_collectionNotes").readOnly = false;
+		
+		if(document.getElementById("i_selectedNotes"))
+			document.getElementById("i_selectedNotes").readOnly = false;		
+		
+		document.getElementById("bt_lockColl").style.display = "inline-block";
+		document.getElementById("bt_unlockColl").style.display = "none";
+	}
+}
+
+//-----------------------------------------------------------------
+function loadCurated(collName){
+	var collFile = CURATEDLIST[collName].filename;
+    $.getJSON( "./curated/"+collFile, function(readData){
+		COLLECTION = readData;
+		Object.setPrototypeOf(COLLECTION, Collection.prototype);	//I have loaded the raw data content, but I need to set the prototype to the Collection class
+		storeCurrentCollection();
+		lockCollection(true);
+		populateCollection();
+		toastr.success("Curated Collection \"" + collName + "\" Loaded");
+	});
+}
+
+function loadCollJSON(){
+	document.getElementById("i_JSON").click();
+}
+function getJSON(files){
+	if((files)&&(files.length>0)){
+	    var reader = new FileReader();
+		reader.onload = importJSON;
+		reader.readAsText(event.target.files[0]);
+	}
+}
+function importJSON(event){
+    COLLECTION = JSON.parse(event.target.result);
+	Object.setPrototypeOf(COLLECTION, Collection.prototype);	//I have loaded the raw data content, but I need to set the prototype to the Collection class
+	storeCurrentCollection();
+	lockCollection(false);
+	populateCollection();
+	toastr.success('Collection Loaded');
+}
+function populateCollection(){
+	document.getElementById("i_collectionName").value = COLLECTION.metadata.name;
+	document.getElementById("i_collectionAuthor").value = COLLECTION.metadata.author;
+	document.getElementById("i_collectionNotes").value = COLLECTION.metadata.notes;
+
+	STATS.num_coll = 0;
+	for(objCode in ARCHIVE.objects){
+		ARCHIVE.objects[objCode].collected = false;
+		if (COLLECTION.objects[objCode] !== undefined){
+			ARCHIVE.objects[objCode].collected = true;
+			STATS.num_coll++;
+		}
+	}
+	document.getElementById("num_coll").innerHTML = STATS.num_coll;
+	CURRENTSEL = -1;
+	updateList();
+}
+
+function updateObjectNotes(objCode, notes){	
+	COLLECTION.objects[objCode].notes = notes;
+	storeCurrentCollection();
+}
+
+function updateCollectionData(){
+	COLLECTION.header.date = (new Date()).toString();
+	COLLECTION.metadata.name = document.getElementById("i_collectionName").value;
+	COLLECTION.metadata.shortName = "";
+	COLLECTION.metadata.author = document.getElementById("i_collectionAuthor").value;
+	COLLECTION.metadata.link = "";
+	COLLECTION.metadata.notes = document.getElementById("i_collectionNotes").value;
+	storeCurrentCollection();
+}
+
+function saveCollJSON(){
+	if(STATS.num_coll<1){ toastr.error('Empty Collection'); return;};
+	
+	updateCollectionData();
+	storeCurrentCollection();
+
+	var element = document.createElement('a');
+	element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(JSON.stringify(COLLECTION, null, 2)));
+	element.setAttribute('download', "collection.json");
+
+	element.style.display = 'none';
+	document.body.appendChild(element);
+
+	element.click();
+
+	document.body.removeChild(element);
+	toastr.success('Collection Exported');
+}
+
+function deleteCollection(){
+	if(COLLECTIONLOCKED){ toastr.error('Collection locked'); return;}
+	if(STATS.num_coll < 1){ toastr.error('Collection already empty'); return;}
+	if(!confirm('Clear the active collection?')) return;
+	COLLECTION = new Collection();
+	storeCurrentCollection();
+	populateCollection();
+	toastr.success('Collection cleared');
+}
+
+function storeCurrentCollection(){
+	localStorage.setItem("DC_COLLECTION",JSON.stringify(COLLECTION));	// store collection
+}
+
+function messageReceived(message){
+	if(COLLECTIONLOCKED){ 
+		toastr.error('cannot integrate annotations: collection locked', 'COLLECTION UPDATE', {timeOut:0, extendedTimeOut:0, closeButton:true});
+		return;
+	}
+
+	if (message.data.session != SESSION_ID) {
+		toastr.error('cannot integrate annotations: wrong session', 'COLLECTION UPDATE', {timeOut:0, extendedTimeOut:0, closeButton:true});		
+		return;
+	}
+
+	var action = message.data.action;
+	var target = message.data.target;
+	
+	var payload = null;
+	if(message.data.payload)
+		payload = JSON.parse(message.data.payload);
+	
+	if(action=="update_object"){
+		if(COLLECTION.objects[target]){
+			COLLECTION.objects[target].version = payload.version;
+			COLLECTION.objects[target].notes = payload.notes;
+			COLLECTION.objects[target].views = payload.views;
+			COLLECTION.objects[target].spots = payload.spots;
+			COLLECTION.objects[target].newIndex = payload.newIndex;	
+			toastr.success('Added annotations for object ' + target, 'COLLECTION UPDATE');
+			storeCurrentCollection();
+		}
+		else{
+			toastr.error('cannot integrate annotations: object ' + target + ' not in collection', 'COLLECTION UPDATE', {timeOut:0, extendedTimeOut:0, closeButton:true});
+			return;
+		}
+	}
+	else if(action=="update_comparison"){
+		if(COLLECTION.comparisons[target]){
+			COLLECTION.comparisons[target].annotations.version = payload.version;
+			COLLECTION.comparisons[target].annotations.notes = payload.notes;
+			COLLECTION.comparisons[target].annotations.views = payload.views;
+			COLLECTION.comparisons[target].annotations.newIndex = payload.newIndex;
+			toastr.success('Added annotations for comparison ' + target, 'COLLECTION UPDATE');
+			storeCurrentCollection();
+		}
+		else{
+			toastr.error('Cannot integrate annotations: comparison ' + target + ' not in collection', 'COLLECTION UPDATE', {timeOut:0, extendedTimeOut:0, closeButton:true});
+			return;
+		}
+	}
+
+}
+
+//-------- COMPARISONS -------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------
+var COMPARISON_EDIT = { // data structure for editing comparisons
+	CURRENT : null,		// code of the comparison currently being edited
+	OBJECTS : [],		// temporary list of objects in the comparison being edited
+};
+
+function addNewComparison(){
+	if(COLLECTIONLOCKED){ toastr.error('Collection locked'); return;}
+	if( Object.keys(COLLECTION.objects).length < 2) { toastr.error('Not enough objects in the collection'); return; }
+
+	let compCode = COLLECTION.addComparison();
+	storeCurrentCollection();
+	updateListCollection();
+
+	editComparisonPanel(compCode);
+}
+function editComparisonPanel(compCode){
+	if(COLLECTIONLOCKED){ toastr.error('Collection locked'); return;}
+
+	document.getElementById("i_comparisonName").value = COLLECTION.comparisons[compCode].name;
+	
+	COMPARISON_EDIT.CURRENT = compCode;
+	COMPARISON_EDIT.OBJECTS = [];
+	for(oi in COLLECTION.comparisons[compCode].objects)
+		COMPARISON_EDIT.OBJECTS.push(COLLECTION.comparisons[compCode].objects[oi]);
+
+	var content = "<table class='table table-secondary table-bordered table-striped mt-2'>";
+	for(objCode in COLLECTION.objects){
+		var thumbnail = getSmallThumb(objCode);
+		var checked = COMPARISON_EDIT.OBJECTS.includes(objCode)?"checked":"";
+		content += "<tr><td class='text-center align-middle'>  <h3><div class='form-check form-switch'><input class='form-check-input' "+ checked +" type='checkbox' id='compList_"+objCode+"' onChange='updateCompSel(this)'></div></h3> </td>";
+		content += "<td class='text-center'><img class='obj_thumb_sm' src='"+thumbnail+"' loading='lazy'/></td><td class='text-center  align-middle'>" + ARCHIVE.objects[objCode]["MUSEUM"] + " " + ARCHIVE.objects[objCode]["INVENTORY"] + "</td></tr>\n";
+	}
+	content += "</table>";
+	document.getElementById("comparisonSelectionArea").innerHTML = content;
+
+	$('#editCollectionPanel').modal('show');
+}
+function updateCompSel(checkbox){
+	var objCode = checkbox.id.slice(9);
+	if(checkbox.checked){
+		if(COMPARISON_EDIT.OBJECTS.length >= 4){
+			toastr.error('Cannot add more than 4 objects to a comparison');
+			checkbox.checked = false;
+			return;
+		}
+		COMPARISON_EDIT.OBJECTS.push(objCode);
+	}
+	else {
+		COMPARISON_EDIT.OBJECTS.splice(COMPARISON_EDIT.OBJECTS.indexOf(objCode), 1);
+	}
+}
+
+function updateComparison(){
+	let needReset = false;
+	if(COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects.length != COMPARISON_EDIT.OBJECTS.length) {
+		needReset = true;
+	}
+	else{
+		for(oi in COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects){
+			if(COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects[oi] != COMPARISON_EDIT.OBJECTS[oi]){
+				needReset = true;
+				break;
+			}
+		}
+	}
+	if (COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects.length == 0) needReset = false; // first time, when the comparison is created, it is empty, but it is not a change
+
+	if (needReset){
+		if(!confirm('Changing the objects and/or their order in a comparison will reset annotations. Confirm?')) {
+			COMPARISON_EDIT.CURRENT = null;
+			storeCurrentCollection();
+			updateListCollection();
+			$('#editCollectionPanel').modal('hide');
+			return;
+		}
+		COLLECTION.resetComparisonAnnotations(COMPARISON_EDIT.CURRENT);
+	}
+
+	// name
+	COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].name = document.getElementById("i_comparisonName").value;
+
+	// type
+	// todo todo
+
+	// objects
+	COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects = [];
+	for(oi in COMPARISON_EDIT.OBJECTS)
+		COLLECTION.comparisons[COMPARISON_EDIT.CURRENT].objects.push(COMPARISON_EDIT.OBJECTS[oi]);	
+	
+	COMPARISON_EDIT.CURRENT = null;
+	storeCurrentCollection();
+	updateListCollection();
+	$('#editCollectionPanel').modal('hide');
+}
+
+function deleteComparison(compCode){
+	if(COLLECTIONLOCKED){ toastr.error('Collection locked'); return;}
+	if(!confirm('Delete comparison?')) return;
+	closeTooltips();
+	COLLECTION.deleteComparison(compCode);
+	storeCurrentCollection();
+	updateListCollection();
+}
+//----------------------------------------------------------------------------------------------
+
+//-----------------------------------------------------------------
+function fillPageHeader(){
+	document.getElementById("siteHeader").innerHTML = siteHeader;
+	document.getElementById("siteLogos").innerHTML = siteLogos;
+	document.getElementById("siteInfo").innerHTML = siteInfo;
+	document.getElementById("siteNews").innerHTML = siteNews;
+	
+	document.title = pageTitle;
+}
+//-----------------------------------------------------------------
+function fillCuratedInterface(){
+	var content="";
+	content += "<option hidden disabled selected value> ----- </option>\n";
+	for(curated in CURATEDLIST){
+		content += "<a class='dropdown-item' href='#' onClick='loadCurated("+ "\"" + curated + "\"" + ");'>"+ curated +"</a>";
+	}
+	document.getElementById("i_collectionsList").innerHTML = content;
+}
+//---------------------------------------------------------------------------------------
+
+function initSessionID(){
+	newID = "DC_" + (new Date()).getTime();
+	SESSION_ID = newID;
+	localStorage.setItem("DC_SESSIONID",SESSION_ID);
+}
+
+//---- TOOLTIPS --------------------------------------------------
+function closeTooltips(){
+	$(".tooltip").tooltip().hide();
+}
+function enableTooltips()
+{
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl, {
+									trigger  : 'hover',
+									container: 'body',
+  									boundary: document.querySelector('#objects_row') // or document.querySelector('#boundary')
+								})
+		});
+}
+//-----------------------------------------------------------------
+
+//---------------------------------------------------------------------------------------
+$(document).ready(function(){
+
+	// session ID for synchronization between tabs
+	initSessionID();	
+	
+	// message channel to receive updates to collection
+	MESSAGECHANNEL = new BroadcastChannel('dyncoll_channel');
+	MESSAGECHANNEL.onmessage = messageReceived; // function handling incoming messages
+	
+	onPageResize();
+	
+	// configuration
+	toastr.options = {
+		"positionClass": "toast-bottom-left",
+		"preventDuplicates": false,
+		"showDuration": "300",
+		"hideDuration": "300",
+		"timeOut": "2000",
+		"extendedTimeOut": "1000"
+	}
+
+	// location-specific info, title, logos
+	fillPageHeader();
+	// curated list
+	fillCuratedInterface();
+	// location-specific filters
+	fillFilters();
+
+	// start tooltips
+	enableTooltips();
+
+	// init editor
+	//$('#i_collectionNotes').summernote();
+	
+	// looking for parameters in webpage address
+	var startColl="";
+	var pageParams = parsePageParams();
+	if(pageParams["coll"])
+	{
+		startColl = decodeURI(pageParams["coll"]);
+	}
+
+	// JSON loading of collection list
+	var anticache = "?v=" + Math.floor(Math.random() * 1000);
+    jQuery.getJSON("./data/" + LISTFILE + anticache, function(data){
+		ARCHIVE.objects = data;
+
+		for(objCode in ARCHIVE.objects.objects){
+			ARCHIVE.objects[objCode].queried = false;
+			ARCHIVE.objects[objCode].selected = false;
+			ARCHIVE.objects[objCode].collected = false;
+		}
+
+		STATS.num_rec = Object.keys(ARCHIVE.objects).length;
+		document.getElementById("num_rec").innerHTML = STATS.num_rec;
+
+		if(startColl!=""){
+			if(CURATEDLIST.hasOwnProperty(startColl)){
+				displayCollectionMode();
+				loadCurated(startColl);
+				return;
+			}
+			else{
+				toastr.error("Curated Collection \"" + startColl + "\" does not exist");
+			}
+		}
+		else {	// if present, restore collection from previous session
+			var storedC = window.localStorage.getItem("DC_COLLECTION");
+			if(storedC) {
+				COLLECTION = JSON.parse(storedC);
+				Object.setPrototypeOf(COLLECTION, Collection.prototype);	//I have loaded the raw data content, but I need to set the prototype to the Collection class
+				if(Object.keys(COLLECTION.objects).length == 0) 
+					COLLECTION = new Collection();  // if there was an empty collection, better to reset everything
+				else
+					toastr.success('Restored data from previous session');
+				populateCollection();
+			}
+		}
+
+		updateList();
+	});
+
+});
+</script>
+</html>

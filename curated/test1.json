@@ -1,0 +1,28 @@
+{
+  "header": {
+    "version": "1.0",
+    "date": "Sat Oct 31 2020 20:12:46 GMT+0100 (Ora standard dell’Europa centrale)"
+  },
+  "metadata": {
+    "name": "1234",
+    "shortName": "",
+    "author": "6666",
+    "link": "",
+    "notes": "aaaa"
+  },
+  "objects": {
+    "DC2_LUHM2828": {
+			"notes": "example of a note for LUHM2828"
+		},
+    "DC8_LUHM8996": {
+			"notes": "further example of note 996"
+		},
+    "DC14_LUHM12888": {
+		},
+    "DC16_LUHM14327": {
+		},
+    "DC9_LUHM12603": {
+			"notes": "notes, notes, notes & notes"
+		}
+  }
+}
