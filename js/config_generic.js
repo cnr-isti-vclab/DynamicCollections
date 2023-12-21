@@ -81,6 +81,7 @@ const materialFilterOptions = [
 "resin",
 "ceramic",
 "plaster",
+"metal"
 ];
 
 const collectionFilterOptions = [
@@ -105,7 +106,7 @@ const siteLogos =`
 const siteNews = `
 		<p>
 		<strong>22/12/2023 - test</strong></br>
-		placeholder.</br>
+		placeholder text.</br>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 		<ul>
 		<li>aaaa.</li>
