@@ -169,7 +169,7 @@ function getModelFile(objCode) {
 	if(ARCHIVE.objects[objCode]["3D_OBJECT_ID"].constructor === Array){
 		modelFile = [];
 		ARCHIVE.objects[objCode]["3D_OBJECT_ID"].forEach((item, ind) => {
-			let newM = ARCHIVE.objects[objCode]["DATA_LOCATION"] + ARCHIVE.objects[objCode]["3D_OBJECT_ID"] + ".nxz"
+			let newM = ARCHIVE.objects[objCode]["DATA_LOCATION"] + ARCHIVE.objects[objCode]["3D_OBJECT_ID"][ind] + ".nxz"
 			modelFile.push(newM);		
 		});
 	}
